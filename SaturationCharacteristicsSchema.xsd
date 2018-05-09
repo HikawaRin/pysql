@@ -1,0 +1,369 @@
+<?xml version="1.0" encoding="gb2312"?>
+<xs:schema id="SaturationCharacteristicsSchema"
+    targetNamespace="http://tempuri.org/SaturationCharacteristicsSchema.xsd"
+    elementFormDefault="qualified"
+    xmlns="http://tempuri.org/SaturationCharacteristicsSchema.xsd"
+    xmlns:mstns="http://tempuri.org/SaturationCharacteristicsSchema.xsd"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+
+	<!-- 简易元素的定义 -->
+	<xs:element name="状态">
+		<xs:simpleType>
+		  <xs:restriction base="xs:integer">
+			<xs:enumeration value="-1"/>
+			<xs:enumeration value="0"/>
+			<xs:enumeration value="1"/>
+			<xs:enumeration value="2"/>
+		  </xs:restriction>
+		</xs:simpleType>
+
+	</xs:element>
+	<xs:element name="输入补偿文件" type="xs:string"/>
+	<xs:element name="输出补偿文件" type="xs:string"/>
+	<xs:element name="电源测量">
+		<xs:simpleType>
+		  <xs:restriction base="xs:integer">
+			<xs:enumeration value="0"/>
+			<xs:enumeration value="1"/>
+		  </xs:restriction>
+		</xs:simpleType>
+
+	</xs:element>
+	<xs:element name="前级放大">
+		<xs:simpleType>
+		  <xs:restriction base="xs:integer">
+			<xs:enumeration value="0"/>
+			<xs:enumeration value="1"/>
+		  </xs:restriction>
+		</xs:simpleType>
+
+	</xs:element>
+	<xs:element name="输入探头">
+		<xs:simpleType>
+		  <xs:restriction base="xs:integer">
+			<xs:enumeration value="0"/>
+			<xs:enumeration value="1"/>
+		  </xs:restriction>
+		</xs:simpleType>
+
+	</xs:element>
+	<xs:element name="输出探头">
+		<xs:simpleType>
+		  <xs:restriction base="xs:integer">
+			<xs:enumeration value="0"/>
+			<xs:enumeration value="1"/>
+		  </xs:restriction>
+		</xs:simpleType>
+
+	</xs:element>
+	<xs:element name="延迟扫描时间" type="xs:float"/>
+	<xs:element name="信号源" type="xs:string"/>
+	<xs:element name="功率计" type="xs:string"/>
+	<xs:element name="电源地址" type="xs:string"/>
+	<xs:element name="起始时间" type="xs:string"/>
+	<xs:element name="结束时间" type="xs:string"/>
+	<xs:element name="总用时间" type="xs:string"/>
+	<xs:element name="备注" type="xs:string"/>
+	<xs:element name="输出功率_float" type="xs:float"/>
+
+	<xs:element name="array_float" type="xs:float"/>
+	<xs:element name="array_int16" type="xs:short"/>
+	<xs:element name="array_int64" type="xs:long"/>
+	<xs:element name="array_double" type="xs:double"/>
+	<!-- 属性的定义 -->
+	 
+	<!-- 复合元素的定义-->
+	<xs:element name="扫描频率">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="array_int64" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+		
+	</xs:element>
+	<xs:element name="起始功率">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="array_double" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+		
+	</xs:element>
+	<xs:element name="截止功率">
+		<xs:complexType>
+			<xs:sequence>
+			<xs:element ref="array_double" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+		
+	</xs:element>
+	<xs:element name="扫描参数">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="扫描频率"/>
+				<xs:element ref="起始功率"/>
+				<xs:element ref="截止功率"/>
+			</xs:sequence>
+		</xs:complexType>
+		
+	</xs:element>
+
+	<xs:element name="输入探头设置">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="输入探头"/>
+				<xs:element ref="输出探头"/>
+			</xs:sequence>
+		</xs:complexType>
+		
+	</xs:element>
+	<xs:element name="测量设置">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="电源测量"/>
+				<xs:element ref="前级放大"/>
+				<xs:element ref="输入探头"/>
+				<xs:element ref="输入探头设置"/>
+				<xs:element ref="输出探头"/>
+				<xs:element ref="延迟扫描时间"/>
+			</xs:sequence>
+		</xs:complexType>
+		
+	</xs:element>
+
+	<xs:element name="行波管电源类型">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="array_int16" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+		
+	</xs:element>
+	<xs:element name="最小量程">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="array_float" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+		
+	</xs:element>
+	<xs:element name="最大量程">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="array_float" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+		
+	</xs:element>
+	<xs:element name="校准值">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="array_float" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+		
+	</xs:element>
+	<xs:element name="行波管电源">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="电源地址"/>
+				<xs:element ref="行波管电源类型"/>
+				<xs:element ref="最小量程"/>
+				<xs:element ref="最大量程"/>
+				<xs:element ref="校准值"/>
+			</xs:sequence>
+		</xs:complexType>
+		
+	</xs:element>
+	<xs:element name="测量仪器">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="信号源"/>
+				<xs:element ref="功率计"/>
+				<xs:element ref="行波管电源"/>
+			</xs:sequence>
+		</xs:complexType>
+		
+	</xs:element>
+
+	<xs:element name="测量信息">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="起始时间"/>
+				<xs:element ref="结束时间"/>
+				<xs:element ref="总用时间"/>
+				<xs:element ref="备注"/>
+			</xs:sequence>
+		</xs:complexType>
+		
+	</xs:element>
+
+	<xs:element name="输入补偿">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="array_double" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+		
+	</xs:element>
+	<xs:element name="输出补偿">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="array_double" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+		
+	</xs:element>
+	<xs:element name="补偿参数">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="输入补偿"/>
+				<xs:element ref="输出补偿"/>
+			</xs:sequence>
+		</xs:complexType>	
+	</xs:element>
+	<xs:element name="电源数据">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="array_double" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+		
+	</xs:element>
+	<xs:element name="电源类型">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="array_int16" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+		
+	</xs:element>
+	<xs:element name="静态数据">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="输出功率_float"/>
+				<xs:element ref="电源数据"/>
+				<xs:element ref="电源类型"/>
+			</xs:sequence>
+		</xs:complexType>	
+	</xs:element>
+	<xs:element name="输入功率">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="array_double" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+		
+	</xs:element>
+	<xs:element name="输出功率">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="array_double" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+		
+	</xs:element>
+	<xs:element name="过程数据">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="输入功率"/>
+				<xs:element ref="输出功率"/>
+			</xs:sequence>
+		</xs:complexType>	
+	</xs:element>
+	<xs:element name="小信号输入功率">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="array_double" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+		
+	</xs:element>
+	<xs:element name="小信号输出功率">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="array_double" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+		
+	</xs:element>
+	<xs:element name="小信号增益">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="array_double" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+		
+	</xs:element>
+	<xs:element name="饱和点输入功率">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="array_double" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+		
+	</xs:element>
+	<xs:element name="饱和点输出功率">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="array_double" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+		
+	</xs:element>
+	<xs:element name="饱和点增益">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="array_double" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+		
+	</xs:element>
+	<xs:element name="分析数据">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="小信号输入功率"/>
+				<xs:element ref="小信号输出功率"/>
+				<xs:element ref="小信号增益"/>
+				<xs:element ref="饱和点输入功率"/>
+				<xs:element ref="饱和点输出功率"/>
+				<xs:element ref="饱和点增益"/>
+			</xs:sequence>
+		</xs:complexType>	
+	</xs:element>
+	<xs:element name="测量数据">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="补偿参数"/>
+				<xs:element ref="静态数据"/>
+				<xs:element ref="过程数据"/>
+				<xs:element ref="分析数据"/>
+			</xs:sequence>
+		</xs:complexType>
+		
+	</xs:element>
+
+	<xs:element name="设置">
+		<xs:complexType>
+			<xs:sequence>
+			   <xs:element ref="输入补偿文件"/>
+			   <xs:element ref="输出补偿文件"/>
+			   <xs:element ref="扫描参数"/>
+			   <xs:element ref="测量设置"/>
+			   <xs:element ref="测量仪器"/>
+			   <xs:element ref="测量信息"/>
+			   <xs:element ref="测量数据"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="饱和特性">
+	 <xs:complexType>
+	  <xs:sequence>
+	   <xs:element ref="状态"/>
+	   <xs:element ref="设置"/>
+	  </xs:sequence>
+	 </xs:complexType>
+	</xs:element>
+
+</xs:schema>
