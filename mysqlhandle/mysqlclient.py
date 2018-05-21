@@ -1,9 +1,10 @@
+#coding = utf8
 #mysql for test ip:118.24.5.150 user:admin pass:admin
 import pymysql
 
 class mysql:
     """sql object to get data from mysql database"""
-    def __init__(self, host, user, password):
+    def __init__(self, host = "118.24.5.150", user = "admin", password = "admin"):
         self.host = host
         self.user = user
         self.password = password
@@ -31,15 +32,15 @@ class mysql:
                 print(item)
         else:
             print("connect database fail")
-        
+
     def Database(self, database = "test2"):
-        self.database = pymysql.connect(self.host, self.user, self.password, database)
+        self.database = pymysql.connect(self.host, self.user, self.password, database, charset = "utf8", local_infile = 1)
         if self.database.open:
             print("Database changed to:", database)
         else:
             print("connect database fail")
 
-    def SELECT(self, column_name = "*", table_name = "test", where = None):
+    def SELECT(self, column_name = "*", table_name = "SCSchemautf8", where = None):
         if self.database is None:
             print("No useable database")
             return
@@ -82,7 +83,12 @@ class mysql:
             mysql.Execute(self, s)
             print("Use save to del from database")
 
-    def UPDATE(self, table_name = "test", Set = " ", where = None)
+    def LOAD_Local_data(self, path = "SCSchema.txt", table = "SCSchemautf8", terminated = ","):
+        s = "LOAD DATA LOCAL INFILE " + "'" + path + "'" + " INTO TABLE " + table + " FIELDS TERMINATED BY " + "'" + terminated + "'" + " LINES TERMINATED BY '\r\n' IGNORE 1 LINES;"
+        print(s)
+        mysql.Execute(self, s)
+        print("Use save to updata data")
+    #def UPDATE(self, table_name = "test", Set = " ", where = None)
 
     def Execute(self, s):
         if self.database is None:

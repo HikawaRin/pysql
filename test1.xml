@@ -1,13 +1,13 @@
-<?xml version="1.0" encoding="gb2312"?>
+<?xml version="1.0" encoding="utf8"?>
 
 
-<±¥ºÍÌØÐÔ xmlns="http://tempuri.org/SaturationCharacteristicsSchema.xsd">
-    <×´Ì¬>1</×´Ì¬>
-    <ÉèÖÃ>
-        <ÊäÈë²¹³¥ÎÄ¼þ>dhuiwqhuiw</ÊäÈë²¹³¥ÎÄ¼þ>
-        <Êä³ö²¹³¥ÎÄ¼þ>dhuiwqhuiw</Êä³ö²¹³¥ÎÄ¼þ>
-        <É¨Ãè²ÎÊý>
-            <É¨ÃèÆµÂÊ>
+<é¥±å’Œç‰¹æ€§ xmlns="http://tempuri.org/SaturationCharacteristicsSchema.xsd">
+    <çŠ¶æ€>1</çŠ¶æ€>
+    <è®¾ç½®>
+        <è¾“å…¥è¡¥å¿æ–‡ä»¶>dhuiwqhuiw</è¾“å…¥è¡¥å¿æ–‡ä»¶>
+        <è¾“å‡ºè¡¥å¿æ–‡ä»¶>dhuiwqhuiw</è¾“å‡ºè¡¥å¿æ–‡ä»¶>
+        <æ‰«æå‚æ•°>
+            <æ‰«æé¢‘çŽ‡>
                 <array_int64>1</array_int64>
                 <array_int64>2</array_int64>
                 <array_int64>0</array_int64>
@@ -18,8 +18,8 @@
                 <array_int64>0</array_int64>
                 <array_int64>0</array_int64>
                 <array_int64>0</array_int64>
-            </É¨ÃèÆµÂÊ>
-            <ÆðÊ¼¹¦ÂÊ>
+            </æ‰«æé¢‘çŽ‡>
+            <èµ·å§‹åŠŸçŽ‡>
                 <array_double>1.2</array_double>
                 <array_double>3.3999999999999999</array_double>
                 <array_double>4.5599999999999996</array_double>
@@ -30,18 +30,8 @@
                 <array_double>3.3999999999999999</array_double>
                 <array_double>4.5</array_double>
                 <array_double>3.3500000000000001</array_double>
-            </ÆðÊ¼¹¦ÂÊ>
-            <½ØÖ¹¹¦ÂÊ>
-                <array_double>1.2</array_double>
-                <array_double>3.3999999999999999</array_double>
-                <array_double>4.5599999999999996</array_double>
-                <array_double>34.353999999999999</array_double>
-                <array_double>34.350000000000001</array_double>
-                <array_double>3.2999999999999998</array_double>
-                <array_double>1.2</array_double>
-                <array_double>3.3999999999999999</array_double>
-                <array_double>4.5</array_double>
-                <array_double>3.3500000000000001</array_double>
+            </èµ·å§‹åŠŸçŽ‡>
+            <æˆªæ­¢åŠŸçŽ‡>
                 <array_double>1.2</array_double>
                 <array_double>3.3999999999999999</array_double>
                 <array_double>4.5599999999999996</array_double>
@@ -62,25 +52,35 @@
                 <array_double>3.3999999999999999</array_double>
                 <array_double>4.5</array_double>
                 <array_double>3.3500000000000001</array_double>
-            </½ØÖ¹¹¦ÂÊ>
-        </É¨Ãè²ÎÊý>
-        <²âÁ¿ÉèÖÃ>
-            <µçÔ´²âÁ¿>1</µçÔ´²âÁ¿>
-            <Ç°¼¶·Å´ó>1</Ç°¼¶·Å´ó>
-            <ÊäÈëÌ½Í·>1</ÊäÈëÌ½Í·>
-            <ÊäÈëÌ½Í·ÉèÖÃ>
-                <ÊäÈëÌ½Í·>1</ÊäÈëÌ½Í·>
-                <Êä³öÌ½Í·>1</Êä³öÌ½Í·>
-            </ÊäÈëÌ½Í·ÉèÖÃ>
-            <Êä³öÌ½Í·>1</Êä³öÌ½Í·>
-            <ÑÓ³ÙÉ¨ÃèÊ±¼ä>1</ÑÓ³ÙÉ¨ÃèÊ±¼ä>
-        </²âÁ¿ÉèÖÃ>
-        <²âÁ¿ÒÇÆ÷>
-            <ÐÅºÅÔ´>dhuiwqhuiw</ÐÅºÅÔ´>
-            <¹¦ÂÊ¼Æ>dhuiwqhuiw</¹¦ÂÊ¼Æ>
-            <ÐÐ²¨¹ÜµçÔ´>
-                <µçÔ´µØÖ·>dhuiwqhuiw</µçÔ´µØÖ·>
-                <ÐÐ²¨¹ÜµçÔ´ÀàÐÍ>
+                <array_double>1.2</array_double>
+                <array_double>3.3999999999999999</array_double>
+                <array_double>4.5599999999999996</array_double>
+                <array_double>34.353999999999999</array_double>
+                <array_double>34.350000000000001</array_double>
+                <array_double>3.2999999999999998</array_double>
+                <array_double>1.2</array_double>
+                <array_double>3.3999999999999999</array_double>
+                <array_double>4.5</array_double>
+                <array_double>3.3500000000000001</array_double>
+            </æˆªæ­¢åŠŸçŽ‡>
+        </æ‰«æå‚æ•°>
+        <æµ‹é‡è®¾ç½®>
+            <ç”µæºæµ‹é‡>1</ç”µæºæµ‹é‡>
+            <å‰çº§æ”¾å¤§>1</å‰çº§æ”¾å¤§>
+            <è¾“å…¥æŽ¢å¤´çŠ¶æ€>1</è¾“å…¥æŽ¢å¤´çŠ¶æ€>
+            <æŽ¢å¤´è®¾ç½®>
+                <è¾“å…¥æŽ¢å¤´>1</è¾“å…¥æŽ¢å¤´>
+                <è¾“å‡ºæŽ¢å¤´>1</è¾“å‡ºæŽ¢å¤´>
+            </æŽ¢å¤´è®¾ç½®>
+            <è¾“å‡ºæŽ¢å¤´çŠ¶æ€>1</è¾“å‡ºæŽ¢å¤´çŠ¶æ€>
+            <å»¶è¿Ÿæ‰«ææ—¶é—´>1</å»¶è¿Ÿæ‰«ææ—¶é—´>
+        </æµ‹é‡è®¾ç½®>
+        <æµ‹é‡ä»ªå™¨>
+            <ä¿¡å·æº>dhuiwqhuiw</ä¿¡å·æº>
+            <åŠŸçŽ‡è®¡>dhuiwqhuiw</åŠŸçŽ‡è®¡>
+            <è¡Œæ³¢ç®¡ç”µæº>
+                <ç”µæºåœ°å€>dhuiwqhuiw</ç”µæºåœ°å€>
+                <ç”µæºç±»åž‹>
                     <array_int16>0</array_int16>
                     <array_int16>1</array_int16>
                     <array_int16>2</array_int16>
@@ -101,8 +101,8 @@
                     <array_int16>7</array_int16>
                     <array_int16>8</array_int16>
                     <array_int16>9</array_int16>
-                </ÐÐ²¨¹ÜµçÔ´ÀàÐÍ>
-                <×îÐ¡Á¿³Ì>
+                </ç”µæºç±»åž‹>
+                <æœ€å°é‡ç¨‹>
                     <array_float>1.2</array_float>
                     <array_float>3.3999999999999999</array_float>
                     <array_float>4.5599999999999996</array_float>
@@ -113,8 +113,8 @@
                     <array_float>3.3999999999999999</array_float>
                     <array_float>4.5</array_float>
                     <array_float>3.3500000000000001</array_float>
-                </×îÐ¡Á¿³Ì>
-                <×î´óÁ¿³Ì>
+                </æœ€å°é‡ç¨‹>
+                <æœ€å¤§é‡ç¨‹>
                     <array_float>1.2</array_float>
                     <array_float>3.3999999999999999</array_float>
                     <array_float>4.5599999999999996</array_float>
@@ -125,8 +125,8 @@
                     <array_float>3.3999999999999999</array_float>
                     <array_float>4.5</array_float>
                     <array_float>3.3500000000000001</array_float>
-                </×î´óÁ¿³Ì>
-                <Ð£×¼Öµ>
+                </æœ€å¤§é‡ç¨‹>
+                <æ ¡å‡†å€¼>
                     <array_float>1.2</array_float>
                     <array_float>3.3999999999999999</array_float>
                     <array_float>4.5599999999999996</array_float>
@@ -137,18 +137,18 @@
                     <array_float>3.3999999999999999</array_float>
                     <array_float>4.5</array_float>
                     <array_float>3.3500000000000001</array_float>
-                </Ð£×¼Öµ>
-            </ÐÐ²¨¹ÜµçÔ´>
-        </²âÁ¿ÒÇÆ÷>
-        <²âÁ¿ÐÅÏ¢>
-            <ÆðÊ¼Ê±¼ä>dhuiwqhuiw</ÆðÊ¼Ê±¼ä>
-            <½áÊøÊ±¼ä>dhuiwqhuiw</½áÊøÊ±¼ä>
-            <×ÜÓÃÊ±¼ä>dhuiwqhuiw</×ÜÓÃÊ±¼ä>
-            <±¸×¢>dhuiwqhuiw</±¸×¢>
-        </²âÁ¿ÐÅÏ¢>
-        <²âÁ¿Êý¾Ý>
-            <²¹³¥²ÎÊý>
-                <ÊäÈë²¹³¥>
+                </æ ¡å‡†å€¼>
+            </è¡Œæ³¢ç®¡ç”µæº>
+        </æµ‹é‡ä»ªå™¨>
+        <æµ‹é‡ä¿¡æ¯>
+            <èµ·å§‹æ—¶é—´>dhuiwqhuiw</èµ·å§‹æ—¶é—´>
+            <ç»“æŸæ—¶é—´>dhuiwqhuiw</ç»“æŸæ—¶é—´>
+            <æ€»ç”¨æ—¶é—´>dhuiwqhuiw</æ€»ç”¨æ—¶é—´>
+            <å¤‡æ³¨>dhuiwqhuiw</å¤‡æ³¨>
+        </æµ‹é‡ä¿¡æ¯>
+        <æµ‹é‡æ•°æ®>
+            <è¡¥å¿å‚æ•°>
+                <è¾“å…¥è¡¥å¿>
                     <array_double>1.2</array_double>
                     <array_double>3.3999999999999999</array_double>
                     <array_double>4.5599999999999996</array_double>
@@ -159,8 +159,8 @@
                     <array_double>3.3999999999999999</array_double>
                     <array_double>4.5</array_double>
                     <array_double>3.3500000000000001</array_double>
-                </ÊäÈë²¹³¥>
-                <Êä³ö²¹³¥>
+                </è¾“å…¥è¡¥å¿>
+                <è¾“å‡ºè¡¥å¿>
                     <array_double>1.2</array_double>
                     <array_double>3.3999999999999999</array_double>
                     <array_double>4.5599999999999996</array_double>
@@ -181,11 +181,11 @@
                     <array_double>3.3999999999999999</array_double>
                     <array_double>4.5</array_double>
                     <array_double>3.3500000000000001</array_double>
-                </Êä³ö²¹³¥>
-            </²¹³¥²ÎÊý>
-            <¾²Ì¬Êý¾Ý>
-                <Êä³ö¹¦ÂÊ_float>1</Êä³ö¹¦ÂÊ_float>
-                <µçÔ´Êý¾Ý>
+                </è¾“å‡ºè¡¥å¿>
+            </è¡¥å¿å‚æ•°>
+            <é™æ€æ•°æ®>
+                <è¾“å‡ºåŠŸçŽ‡_float>1</è¾“å‡ºåŠŸçŽ‡_float>
+                <ç”µæºæ•°æ®>
                     <array_double>1.2</array_double>
                     <array_double>3.3999999999999999</array_double>
                     <array_double>4.5599999999999996</array_double>
@@ -196,8 +196,8 @@
                     <array_double>3.3999999999999999</array_double>
                     <array_double>4.5</array_double>
                     <array_double>3.3500000000000001</array_double>
-                </µçÔ´Êý¾Ý>
-                <µçÔ´ÀàÐÍ>
+                </ç”µæºæ•°æ®>
+                <ç”µæºç±»åž‹>
                     <array_int16>0</array_int16>
                     <array_int16>1</array_int16>
                     <array_int16>2</array_int16>
@@ -208,10 +208,10 @@
                     <array_int16>7</array_int16>
                     <array_int16>8</array_int16>
                     <array_int16>9</array_int16>
-                </µçÔ´ÀàÐÍ>
-            </¾²Ì¬Êý¾Ý>
-            <¹ý³ÌÊý¾Ý>
-                <ÊäÈë¹¦ÂÊ>
+                </ç”µæºç±»åž‹>
+            </é™æ€æ•°æ®>
+            <è¿‡ç¨‹æ•°æ®>
+                <è¾“å…¥åŠŸçŽ‡>
                     <array_double>1.2</array_double>
                     <array_double>3.3999999999999999</array_double>
                     <array_double>4.5599999999999996</array_double>
@@ -222,8 +222,8 @@
                     <array_double>3.3999999999999999</array_double>
                     <array_double>4.5</array_double>
                     <array_double>3.3500000000000001</array_double>
-                </ÊäÈë¹¦ÂÊ>
-                <Êä³ö¹¦ÂÊ>
+                </è¾“å…¥åŠŸçŽ‡>
+                <è¾“å‡ºåŠŸçŽ‡>
                     <array_double>1.2</array_double>
                     <array_double>3.3999999999999999</array_double>
                     <array_double>4.5599999999999996</array_double>
@@ -234,10 +234,10 @@
                     <array_double>3.3999999999999999</array_double>
                     <array_double>4.5</array_double>
                     <array_double>3.3500000000000001</array_double>
-                </Êä³ö¹¦ÂÊ>
-            </¹ý³ÌÊý¾Ý>
-            <·ÖÎöÊý¾Ý>
-                <Ð¡ÐÅºÅÊäÈë¹¦ÂÊ>
+                </è¾“å‡ºåŠŸçŽ‡>
+            </è¿‡ç¨‹æ•°æ®>
+            <åˆ†æžæ•°æ®>
+                <å°ä¿¡å·è¾“å…¥åŠŸçŽ‡>
                     <array_double>1.2</array_double>
                     <array_double>3.3999999999999999</array_double>
                     <array_double>4.5599999999999996</array_double>
@@ -248,8 +248,8 @@
                     <array_double>3.3999999999999999</array_double>
                     <array_double>4.5</array_double>
                     <array_double>3.3500000000000001</array_double>
-                </Ð¡ÐÅºÅÊäÈë¹¦ÂÊ>
-                <Ð¡ÐÅºÅÊä³ö¹¦ÂÊ>
+                </å°ä¿¡å·è¾“å…¥åŠŸçŽ‡>
+                <å°ä¿¡å·è¾“å‡ºåŠŸçŽ‡>
                     <array_double>1.2</array_double>
                     <array_double>3.3999999999999999</array_double>
                     <array_double>4.5599999999999996</array_double>
@@ -260,8 +260,8 @@
                     <array_double>3.3999999999999999</array_double>
                     <array_double>4.5</array_double>
                     <array_double>3.3500000000000001</array_double>
-                </Ð¡ÐÅºÅÊä³ö¹¦ÂÊ>
-                <Ð¡ÐÅºÅÔöÒæ>
+                </å°ä¿¡å·è¾“å‡ºåŠŸçŽ‡>
+                <å°ä¿¡å·å¢žç›Š>
                     <array_double>1.2</array_double>
                     <array_double>3.3999999999999999</array_double>
                     <array_double>4.5599999999999996</array_double>
@@ -272,8 +272,8 @@
                     <array_double>3.3999999999999999</array_double>
                     <array_double>4.5</array_double>
                     <array_double>3.3500000000000001</array_double>
-                </Ð¡ÐÅºÅÔöÒæ>
-                <±¥ºÍµãÊäÈë¹¦ÂÊ>
+                </å°ä¿¡å·å¢žç›Š>
+                <é¥±å’Œç‚¹è¾“å…¥åŠŸçŽ‡>
                     <array_double>1.2</array_double>
                     <array_double>3.3999999999999999</array_double>
                     <array_double>4.5599999999999996</array_double>
@@ -284,8 +284,8 @@
                     <array_double>3.3999999999999999</array_double>
                     <array_double>4.5</array_double>
                     <array_double>3.3500000000000001</array_double>
-                </±¥ºÍµãÊäÈë¹¦ÂÊ>
-                <±¥ºÍµãÊä³ö¹¦ÂÊ>
+                </é¥±å’Œç‚¹è¾“å…¥åŠŸçŽ‡>
+                <é¥±å’Œç‚¹è¾“å‡ºåŠŸçŽ‡>
                     <array_double>1.2</array_double>
                     <array_double>3.3999999999999999</array_double>
                     <array_double>4.5599999999999996</array_double>
@@ -296,8 +296,8 @@
                     <array_double>3.3999999999999999</array_double>
                     <array_double>4.5</array_double>
                     <array_double>3.3500000000000001</array_double>
-                </±¥ºÍµãÊä³ö¹¦ÂÊ>
-                <±¥ºÍµãÔöÒæ>
+                </é¥±å’Œç‚¹è¾“å‡ºåŠŸçŽ‡>
+                <é¥±å’Œç‚¹å¢žç›Š>
                     <array_double>1.2</array_double>
                     <array_double>3.3999999999999999</array_double>
                     <array_double>4.5599999999999996</array_double>
@@ -308,8 +308,8 @@
                     <array_double>3.3999999999999999</array_double>
                     <array_double>4.5</array_double>
                     <array_double>3.3500000000000001</array_double>
-                </±¥ºÍµãÔöÒæ>
-            </·ÖÎöÊý¾Ý>
-        </²âÁ¿Êý¾Ý>
-    </ÉèÖÃ>
-</±¥ºÍÌØÐÔ>
+                </é¥±å’Œç‚¹å¢žç›Š>
+            </åˆ†æžæ•°æ®>
+        </æµ‹é‡æ•°æ®>
+    </è®¾ç½®>
+</é¥±å’Œç‰¹æ€§>

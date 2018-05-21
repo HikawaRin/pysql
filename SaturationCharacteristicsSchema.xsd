@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="gb2312"?>
+<?xml version="1.0" encoding="utf8"?>
 <xs:schema id="SaturationCharacteristicsSchema"
     targetNamespace="http://tempuri.org/SaturationCharacteristicsSchema.xsd"
     elementFormDefault="qualified"
@@ -7,8 +7,8 @@
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
 >
 
-	<!-- ¼òÒ×ÔªËØµÄ¶¨Òå -->
-	<xs:element name="×´Ì¬">
+	<!-- ç®€æ˜“å…ƒç´ çš„å®šä¹‰ -->
+	<xs:element name="çŠ¶æ€">
 		<xs:simpleType>
 		  <xs:restriction base="xs:integer">
 			<xs:enumeration value="-1"/>
@@ -19,9 +19,9 @@
 		</xs:simpleType>
 
 	</xs:element>
-	<xs:element name="ÊäÈë²¹³¥ÎÄ¼þ" type="xs:string"/>
-	<xs:element name="Êä³ö²¹³¥ÎÄ¼þ" type="xs:string"/>
-	<xs:element name="µçÔ´²âÁ¿">
+	<xs:element name="è¾“å…¥è¡¥å¿æ–‡ä»¶" type="xs:string"/>
+	<xs:element name="è¾“å‡ºè¡¥å¿æ–‡ä»¶" type="xs:string"/>
+	<xs:element name="ç”µæºæµ‹é‡">
 		<xs:simpleType>
 		  <xs:restriction base="xs:integer">
 			<xs:enumeration value="0"/>
@@ -30,7 +30,7 @@
 		</xs:simpleType>
 
 	</xs:element>
-	<xs:element name="Ç°¼¶·Å´ó">
+	<xs:element name="å‰çº§æ”¾å¤§">
 		<xs:simpleType>
 		  <xs:restriction base="xs:integer">
 			<xs:enumeration value="0"/>
@@ -39,7 +39,7 @@
 		</xs:simpleType>
 
 	</xs:element>
-	<xs:element name="ÊäÈëÌ½Í·">
+	<xs:element name="è¾“å…¥æŽ¢å¤´çŠ¶æ€">
 		<xs:simpleType>
 		  <xs:restriction base="xs:integer">
 			<xs:enumeration value="0"/>
@@ -48,7 +48,9 @@
 		</xs:simpleType>
 
 	</xs:element>
-	<xs:element name="Êä³öÌ½Í·">
+	<xs:element name="è¾“å…¥æŽ¢å¤´" type="xs:short"/>
+	<xs:element name="è¾“å‡ºæŽ¢å¤´" type="xs:short"/>
+	<xs:element name="è¾“å‡ºæŽ¢å¤´çŠ¶æ€">
 		<xs:simpleType>
 		  <xs:restriction base="xs:integer">
 			<xs:enumeration value="0"/>
@@ -57,24 +59,24 @@
 		</xs:simpleType>
 
 	</xs:element>
-	<xs:element name="ÑÓ³ÙÉ¨ÃèÊ±¼ä" type="xs:float"/>
-	<xs:element name="ÐÅºÅÔ´" type="xs:string"/>
-	<xs:element name="¹¦ÂÊ¼Æ" type="xs:string"/>
-	<xs:element name="µçÔ´µØÖ·" type="xs:string"/>
-	<xs:element name="ÆðÊ¼Ê±¼ä" type="xs:string"/>
-	<xs:element name="½áÊøÊ±¼ä" type="xs:string"/>
-	<xs:element name="×ÜÓÃÊ±¼ä" type="xs:string"/>
-	<xs:element name="±¸×¢" type="xs:string"/>
-	<xs:element name="Êä³ö¹¦ÂÊ_float" type="xs:float"/>
+	<xs:element name="å»¶è¿Ÿæ‰«ææ—¶é—´" type="xs:float"/>
+	<xs:element name="ä¿¡å·æº" type="xs:string"/>
+	<xs:element name="åŠŸçŽ‡è®¡" type="xs:string"/>
+	<xs:element name="ç”µæºåœ°å€" type="xs:string"/>
+	<xs:element name="èµ·å§‹æ—¶é—´" type="xs:string"/>
+	<xs:element name="ç»“æŸæ—¶é—´" type="xs:string"/>
+	<xs:element name="æ€»ç”¨æ—¶é—´" type="xs:string"/>
+	<xs:element name="å¤‡æ³¨" type="xs:string"/>
+	<xs:element name="è¾“å‡ºåŠŸçŽ‡_float" type="xs:float"/>
 
 	<xs:element name="array_float" type="xs:float"/>
 	<xs:element name="array_int16" type="xs:short"/>
 	<xs:element name="array_int64" type="xs:long"/>
 	<xs:element name="array_double" type="xs:double"/>
-	<!-- ÊôÐÔµÄ¶¨Òå -->
+	<!-- å±žæ€§çš„å®šä¹‰ -->
 	 
-	<!-- ¸´ºÏÔªËØµÄ¶¨Òå-->
-	<xs:element name="É¨ÃèÆµÂÊ">
+	<!-- å¤åˆå…ƒç´ çš„å®šä¹‰-->
+	<xs:element name="æ‰«æé¢‘çŽ‡">
 		<xs:complexType>
 			<xs:sequence>
 				<xs:element ref="array_int64" maxOccurs="unbounded"/>
@@ -82,7 +84,7 @@
 		</xs:complexType>
 		
 	</xs:element>
-	<xs:element name="ÆðÊ¼¹¦ÂÊ">
+	<xs:element name="èµ·å§‹åŠŸçŽ‡">
 		<xs:complexType>
 			<xs:sequence>
 				<xs:element ref="array_double" maxOccurs="unbounded"/>
@@ -90,7 +92,7 @@
 		</xs:complexType>
 		
 	</xs:element>
-	<xs:element name="½ØÖ¹¹¦ÂÊ">
+	<xs:element name="æˆªæ­¢åŠŸçŽ‡">
 		<xs:complexType>
 			<xs:sequence>
 			<xs:element ref="array_double" maxOccurs="unbounded"/>
@@ -98,41 +100,41 @@
 		</xs:complexType>
 		
 	</xs:element>
-	<xs:element name="É¨Ãè²ÎÊý">
+	<xs:element name="æ‰«æå‚æ•°">
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element ref="É¨ÃèÆµÂÊ"/>
-				<xs:element ref="ÆðÊ¼¹¦ÂÊ"/>
-				<xs:element ref="½ØÖ¹¹¦ÂÊ"/>
+				<xs:element ref="æ‰«æé¢‘çŽ‡"/>
+				<xs:element ref="èµ·å§‹åŠŸçŽ‡"/>
+				<xs:element ref="æˆªæ­¢åŠŸçŽ‡"/>
 			</xs:sequence>
 		</xs:complexType>
 		
 	</xs:element>
 
-	<xs:element name="ÊäÈëÌ½Í·ÉèÖÃ">
+	<xs:element name="è¾“å…¥æŽ¢å¤´è®¾ç½®">
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element ref="ÊäÈëÌ½Í·"/>
-				<xs:element ref="Êä³öÌ½Í·"/>
+				<xs:element ref="è¾“å…¥æŽ¢å¤´"/>
+				<xs:element ref="è¾“å‡ºæŽ¢å¤´"/>
 			</xs:sequence>
 		</xs:complexType>
 		
 	</xs:element>
-	<xs:element name="²âÁ¿ÉèÖÃ">
+	<xs:element name="æµ‹é‡è®¾ç½®">
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element ref="µçÔ´²âÁ¿"/>
-				<xs:element ref="Ç°¼¶·Å´ó"/>
-				<xs:element ref="ÊäÈëÌ½Í·"/>
-				<xs:element ref="ÊäÈëÌ½Í·ÉèÖÃ"/>
-				<xs:element ref="Êä³öÌ½Í·"/>
-				<xs:element ref="ÑÓ³ÙÉ¨ÃèÊ±¼ä"/>
+				<xs:element ref="ç”µæºæµ‹é‡"/>
+				<xs:element ref="å‰çº§æ”¾å¤§"/>
+				<xs:element ref="è¾“å…¥æŽ¢å¤´çŠ¶æ€"/>
+				<xs:element ref="æŽ¢å¤´è®¾ç½®"/>
+				<xs:element ref="è¾“å‡ºæŽ¢å¤´çŠ¶æ€"/>
+				<xs:element ref="å»¶è¿Ÿæ‰«ææ—¶é—´"/>
 			</xs:sequence>
 		</xs:complexType>
 		
 	</xs:element>
 
-	<xs:element name="ÐÐ²¨¹ÜµçÔ´ÀàÐÍ">
+	<xs:element name="ç”µæºç±»åž‹">
 		<xs:complexType>
 			<xs:sequence>
 				<xs:element ref="array_int16" maxOccurs="unbounded"/>
@@ -140,7 +142,7 @@
 		</xs:complexType>
 		
 	</xs:element>
-	<xs:element name="×îÐ¡Á¿³Ì">
+	<xs:element name="æœ€å°é‡ç¨‹">
 		<xs:complexType>
 			<xs:sequence>
 				<xs:element ref="array_float" maxOccurs="unbounded"/>
@@ -148,7 +150,7 @@
 		</xs:complexType>
 		
 	</xs:element>
-	<xs:element name="×î´óÁ¿³Ì">
+	<xs:element name="æœ€å¤§é‡ç¨‹">
 		<xs:complexType>
 			<xs:sequence>
 				<xs:element ref="array_float" maxOccurs="unbounded"/>
@@ -156,7 +158,7 @@
 		</xs:complexType>
 		
 	</xs:element>
-	<xs:element name="Ð£×¼Öµ">
+	<xs:element name="æ ¡å‡†å€¼">
 		<xs:complexType>
 			<xs:sequence>
 				<xs:element ref="array_float" maxOccurs="unbounded"/>
@@ -164,204 +166,196 @@
 		</xs:complexType>
 		
 	</xs:element>
-	<xs:element name="ÐÐ²¨¹ÜµçÔ´">
+	<xs:element name="è¡Œæ³¢ç®¡ç”µæº">
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element ref="µçÔ´µØÖ·"/>
-				<xs:element ref="ÐÐ²¨¹ÜµçÔ´ÀàÐÍ"/>
-				<xs:element ref="×îÐ¡Á¿³Ì"/>
-				<xs:element ref="×î´óÁ¿³Ì"/>
-				<xs:element ref="Ð£×¼Öµ"/>
+				<xs:element ref="ç”µæºåœ°å€"/>
+				<xs:element ref="ç”µæºç±»åž‹"/>
+				<xs:element ref="æœ€å°é‡ç¨‹"/>
+				<xs:element ref="æœ€å¤§é‡ç¨‹"/>
+				<xs:element ref="æ ¡å‡†å€¼"/>
 			</xs:sequence>
 		</xs:complexType>
 		
 	</xs:element>
-	<xs:element name="²âÁ¿ÒÇÆ÷">
+	<xs:element name="æµ‹é‡ä»ªå™¨">
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element ref="ÐÅºÅÔ´"/>
-				<xs:element ref="¹¦ÂÊ¼Æ"/>
-				<xs:element ref="ÐÐ²¨¹ÜµçÔ´"/>
-			</xs:sequence>
-		</xs:complexType>
-		
-	</xs:element>
-
-	<xs:element name="²âÁ¿ÐÅÏ¢">
-		<xs:complexType>
-			<xs:sequence>
-				<xs:element ref="ÆðÊ¼Ê±¼ä"/>
-				<xs:element ref="½áÊøÊ±¼ä"/>
-				<xs:element ref="×ÜÓÃÊ±¼ä"/>
-				<xs:element ref="±¸×¢"/>
+				<xs:element ref="ä¿¡å·æº"/>
+				<xs:element ref="åŠŸçŽ‡è®¡"/>
+				<xs:element ref="è¡Œæ³¢ç®¡ç”µæº"/>
 			</xs:sequence>
 		</xs:complexType>
 		
 	</xs:element>
 
-	<xs:element name="ÊäÈë²¹³¥">
+	<xs:element name="æµ‹é‡ä¿¡æ¯">
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element ref="array_double" maxOccurs="unbounded"/>
-			</xs:sequence>
-		</xs:complexType>
-		
-	</xs:element>
-	<xs:element name="Êä³ö²¹³¥">
-		<xs:complexType>
-			<xs:sequence>
-				<xs:element ref="array_double" maxOccurs="unbounded"/>
-			</xs:sequence>
-		</xs:complexType>
-		
-	</xs:element>
-	<xs:element name="²¹³¥²ÎÊý">
-		<xs:complexType>
-			<xs:sequence>
-				<xs:element ref="ÊäÈë²¹³¥"/>
-				<xs:element ref="Êä³ö²¹³¥"/>
-			</xs:sequence>
-		</xs:complexType>	
-	</xs:element>
-	<xs:element name="µçÔ´Êý¾Ý">
-		<xs:complexType>
-			<xs:sequence>
-				<xs:element ref="array_double" maxOccurs="unbounded"/>
-			</xs:sequence>
-		</xs:complexType>
-		
-	</xs:element>
-	<xs:element name="µçÔ´ÀàÐÍ">
-		<xs:complexType>
-			<xs:sequence>
-				<xs:element ref="array_int16" maxOccurs="unbounded"/>
-			</xs:sequence>
-		</xs:complexType>
-		
-	</xs:element>
-	<xs:element name="¾²Ì¬Êý¾Ý">
-		<xs:complexType>
-			<xs:sequence>
-				<xs:element ref="Êä³ö¹¦ÂÊ_float"/>
-				<xs:element ref="µçÔ´Êý¾Ý"/>
-				<xs:element ref="µçÔ´ÀàÐÍ"/>
-			</xs:sequence>
-		</xs:complexType>	
-	</xs:element>
-	<xs:element name="ÊäÈë¹¦ÂÊ">
-		<xs:complexType>
-			<xs:sequence>
-				<xs:element ref="array_double" maxOccurs="unbounded"/>
-			</xs:sequence>
-		</xs:complexType>
-		
-	</xs:element>
-	<xs:element name="Êä³ö¹¦ÂÊ">
-		<xs:complexType>
-			<xs:sequence>
-				<xs:element ref="array_double" maxOccurs="unbounded"/>
-			</xs:sequence>
-		</xs:complexType>
-		
-	</xs:element>
-	<xs:element name="¹ý³ÌÊý¾Ý">
-		<xs:complexType>
-			<xs:sequence>
-				<xs:element ref="ÊäÈë¹¦ÂÊ"/>
-				<xs:element ref="Êä³ö¹¦ÂÊ"/>
-			</xs:sequence>
-		</xs:complexType>	
-	</xs:element>
-	<xs:element name="Ð¡ÐÅºÅÊäÈë¹¦ÂÊ">
-		<xs:complexType>
-			<xs:sequence>
-				<xs:element ref="array_double" maxOccurs="unbounded"/>
-			</xs:sequence>
-		</xs:complexType>
-		
-	</xs:element>
-	<xs:element name="Ð¡ÐÅºÅÊä³ö¹¦ÂÊ">
-		<xs:complexType>
-			<xs:sequence>
-				<xs:element ref="array_double" maxOccurs="unbounded"/>
-			</xs:sequence>
-		</xs:complexType>
-		
-	</xs:element>
-	<xs:element name="Ð¡ÐÅºÅÔöÒæ">
-		<xs:complexType>
-			<xs:sequence>
-				<xs:element ref="array_double" maxOccurs="unbounded"/>
-			</xs:sequence>
-		</xs:complexType>
-		
-	</xs:element>
-	<xs:element name="±¥ºÍµãÊäÈë¹¦ÂÊ">
-		<xs:complexType>
-			<xs:sequence>
-				<xs:element ref="array_double" maxOccurs="unbounded"/>
-			</xs:sequence>
-		</xs:complexType>
-		
-	</xs:element>
-	<xs:element name="±¥ºÍµãÊä³ö¹¦ÂÊ">
-		<xs:complexType>
-			<xs:sequence>
-				<xs:element ref="array_double" maxOccurs="unbounded"/>
-			</xs:sequence>
-		</xs:complexType>
-		
-	</xs:element>
-	<xs:element name="±¥ºÍµãÔöÒæ">
-		<xs:complexType>
-			<xs:sequence>
-				<xs:element ref="array_double" maxOccurs="unbounded"/>
-			</xs:sequence>
-		</xs:complexType>
-		
-	</xs:element>
-	<xs:element name="·ÖÎöÊý¾Ý">
-		<xs:complexType>
-			<xs:sequence>
-				<xs:element ref="Ð¡ÐÅºÅÊäÈë¹¦ÂÊ"/>
-				<xs:element ref="Ð¡ÐÅºÅÊä³ö¹¦ÂÊ"/>
-				<xs:element ref="Ð¡ÐÅºÅÔöÒæ"/>
-				<xs:element ref="±¥ºÍµãÊäÈë¹¦ÂÊ"/>
-				<xs:element ref="±¥ºÍµãÊä³ö¹¦ÂÊ"/>
-				<xs:element ref="±¥ºÍµãÔöÒæ"/>
-			</xs:sequence>
-		</xs:complexType>	
-	</xs:element>
-	<xs:element name="²âÁ¿Êý¾Ý">
-		<xs:complexType>
-			<xs:sequence>
-				<xs:element ref="²¹³¥²ÎÊý"/>
-				<xs:element ref="¾²Ì¬Êý¾Ý"/>
-				<xs:element ref="¹ý³ÌÊý¾Ý"/>
-				<xs:element ref="·ÖÎöÊý¾Ý"/>
+				<xs:element ref="èµ·å§‹æ—¶é—´"/>
+				<xs:element ref="ç»“æŸæ—¶é—´"/>
+				<xs:element ref="æ€»ç”¨æ—¶é—´"/>
+				<xs:element ref="å¤‡æ³¨"/>
 			</xs:sequence>
 		</xs:complexType>
 		
 	</xs:element>
 
-	<xs:element name="ÉèÖÃ">
+	<xs:element name="è¾“å…¥è¡¥å¿">
 		<xs:complexType>
 			<xs:sequence>
-			   <xs:element ref="ÊäÈë²¹³¥ÎÄ¼þ"/>
-			   <xs:element ref="Êä³ö²¹³¥ÎÄ¼þ"/>
-			   <xs:element ref="É¨Ãè²ÎÊý"/>
-			   <xs:element ref="²âÁ¿ÉèÖÃ"/>
-			   <xs:element ref="²âÁ¿ÒÇÆ÷"/>
-			   <xs:element ref="²âÁ¿ÐÅÏ¢"/>
-			   <xs:element ref="²âÁ¿Êý¾Ý"/>
+				<xs:element ref="array_double" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+		
+	</xs:element>
+	<xs:element name="è¾“å‡ºè¡¥å¿">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="array_double" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+		
+	</xs:element>
+	<xs:element name="è¡¥å¿å‚æ•°">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="è¾“å…¥è¡¥å¿"/>
+				<xs:element ref="è¾“å‡ºè¡¥å¿"/>
+			</xs:sequence>
+		</xs:complexType>	
+	</xs:element>
+	<xs:element name="ç”µæºæ•°æ®">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="array_double" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+		
+	</xs:element>
+	<xs:element name="é™æ€æ•°æ®">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="è¾“å‡ºåŠŸçŽ‡_float"/>
+				<xs:element ref="ç”µæºæ•°æ®"/>
+				<xs:element ref="ç”µæºç±»åž‹"/>
+			</xs:sequence>
+		</xs:complexType>	
+	</xs:element>
+	<xs:element name="è¾“å…¥åŠŸçŽ‡">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="array_double" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+		
+	</xs:element>
+	<xs:element name="è¾“å‡ºåŠŸçŽ‡">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="array_double" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+		
+	</xs:element>
+	<xs:element name="è¿‡ç¨‹æ•°æ®">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="è¾“å…¥åŠŸçŽ‡"/>
+				<xs:element ref="è¾“å‡ºåŠŸçŽ‡"/>
+			</xs:sequence>
+		</xs:complexType>	
+	</xs:element>
+	<xs:element name="å°ä¿¡å·è¾“å…¥åŠŸçŽ‡">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="array_double" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+		
+	</xs:element>
+	<xs:element name="å°ä¿¡å·è¾“å‡ºåŠŸçŽ‡">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="array_double" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+		
+	</xs:element>
+	<xs:element name="å°ä¿¡å·å¢žç›Š">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="array_double" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+		
+	</xs:element>
+	<xs:element name="é¥±å’Œç‚¹è¾“å…¥åŠŸçŽ‡">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="array_double" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+		
+	</xs:element>
+	<xs:element name="é¥±å’Œç‚¹è¾“å‡ºåŠŸçŽ‡">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="array_double" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+		
+	</xs:element>
+	<xs:element name="é¥±å’Œç‚¹å¢žç›Š">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="array_double" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+		
+	</xs:element>
+	<xs:element name="åˆ†æžæ•°æ®">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="å°ä¿¡å·è¾“å…¥åŠŸçŽ‡"/>
+				<xs:element ref="å°ä¿¡å·è¾“å‡ºåŠŸçŽ‡"/>
+				<xs:element ref="å°ä¿¡å·å¢žç›Š"/>
+				<xs:element ref="é¥±å’Œç‚¹è¾“å…¥åŠŸçŽ‡"/>
+				<xs:element ref="é¥±å’Œç‚¹è¾“å‡ºåŠŸçŽ‡"/>
+				<xs:element ref="é¥±å’Œç‚¹å¢žç›Š"/>
+			</xs:sequence>
+		</xs:complexType>	
+	</xs:element>
+	<xs:element name="æµ‹é‡æ•°æ®">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="è¡¥å¿å‚æ•°"/>
+				<xs:element ref="é™æ€æ•°æ®"/>
+				<xs:element ref="è¿‡ç¨‹æ•°æ®"/>
+				<xs:element ref="åˆ†æžæ•°æ®"/>
+			</xs:sequence>
+		</xs:complexType>
+		
+	</xs:element>
+
+	<xs:element name="è®¾ç½®">
+		<xs:complexType>
+			<xs:sequence>
+			   <xs:element ref="è¾“å…¥è¡¥å¿æ–‡ä»¶"/>
+			   <xs:element ref="è¾“å‡ºè¡¥å¿æ–‡ä»¶"/>
+			   <xs:element ref="æ‰«æå‚æ•°"/>
+			   <xs:element ref="æµ‹é‡è®¾ç½®"/>
+			   <xs:element ref="æµ‹é‡ä»ªå™¨"/>
+			   <xs:element ref="æµ‹é‡ä¿¡æ¯"/>
+			   <xs:element ref="æµ‹é‡æ•°æ®"/>
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
-	<xs:element name="±¥ºÍÌØÐÔ">
+	<xs:element name="é¥±å’Œç‰¹æ€§">
 	 <xs:complexType>
 	  <xs:sequence>
-	   <xs:element ref="×´Ì¬"/>
-	   <xs:element ref="ÉèÖÃ"/>
+	   <xs:element ref="çŠ¶æ€"/>
+	   <xs:element ref="è®¾ç½®"/>
 	  </xs:sequence>
 	 </xs:complexType>
 	</xs:element>

@@ -38,7 +38,7 @@ ID,ParentID,ElementName,NodeType,DataType,PreSibID,Restriction,Restriction_value
 37,22,校准值,complexType,array_float,36,NULL,NULL
 38,27,输入补偿,complexType,array_double,0,NULL,NULL
 39,27,输出补偿,complexType,array_double,38,NULL,NULL
-40,28,输出功率_float,simpleType,float,0,NULL,NULL
+40,28,输出功率float,simpleType,float,0,NULL,NULL
 41,28,电源数据,complexType,array_double,40,NULL,NULL
 42,28,电源类型,complexType,array_int16,41,NULL,NULL
 43,29,输入功率,complexType,array_double,0,NULL,NULL
