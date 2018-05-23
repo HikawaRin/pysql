@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-#coding=gb2312
+#coding=utf8
 from lxml import etree
 import timeit
 

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <xs:schema id="SaturationCharacteristicsSchema"
     targetNamespace="http://tempuri.org/SaturationCharacteristicsSchema.xsd"
     elementFormDefault="qualified"
@@ -111,7 +111,7 @@
 		
 	</xs:element>
 
-	<xs:element name="输入探头设置">
+	<xs:element name="探头设置">
 		<xs:complexType>
 			<xs:sequence>
 				<xs:element ref="输入探头"/>
