@@ -62,7 +62,7 @@ def getData(node):
     if(len(child) == 0):
         Id = dict[node.tag]
         s = str(ModelID) + " " + str(Id) + " 0 " + text
-        print(s)
+        #print(s)
         f.write(s)
         f.write("\n")
     elif(len(child) > 1):
@@ -72,7 +72,7 @@ def getData(node):
                 text = child[i].xpath("normalize-space(./text())")
                 Id = dict[node.tag]
                 s = str(ModelID) + " " + str(Id) + " " + str(i) + " " + text
-                print(s)
+                #print(s)
                 f.write(s)
                 f.write("\n")
         else:
@@ -86,11 +86,12 @@ def getData(node):
 if __name__=="__main__":
     xml = etree.parse("test2.xml")
     root = xml.getroot()
-    f = open('data2.txt','a')
+    f = open('data3.txt','a')
     global ModelID
-    ModelID = 1
+    ModelID = 2
     print("ModelID ID order data")
     f.write("ID ElementName order data")
     f.write("\n")
     getData(root)
     f.close()
+    print("Done")

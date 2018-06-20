@@ -83,8 +83,10 @@ class mysql:
             mysql.Execute(self, s)
             print("Use save to del from database")
 
-    def LOAD_Local_data(self, path = "SCSchema.txt", table = "SCSchemautf8", terminated = ","):
-        s = "LOAD DATA LOCAL INFILE " + "'" + path + "'" + " INTO TABLE " + table + " FIELDS TERMINATED BY " + "'" + terminated + "'" + " LINES TERMINATED BY '\r\n' IGNORE 1 LINES;"
+    def LOAD_Local_data(self, path = "data2.txt", table = "SCData", terminated = ","):
+        s = "LOAD DATA LOCAL INFILE " + "'" + path + "'"
+        s += " INTO TABLE " + table + " character set utf8"
+        s += " FIELDS TERMINATED BY " + "'" + terminated + "'" + " LINES TERMINATED BY '\r\n' IGNORE 1 LINES;"
         print(s)
         mysql.Execute(self, s)
         print("Use save to updata data")

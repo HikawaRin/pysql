@@ -98,8 +98,6 @@ class exportData:
     def __init__(self, database, xmlpath = "unit_test.xml", schemapath = "UnitSchema"):
         self.LoadXML(xmlpath)
         self.LoadDict(database, schemapath)
-        #print(self.ID)
-        #print(self.Type)
         self.result = ["ModelID SchemaID Location Date \r\n"]
     
     def LoadXML(self, path):
@@ -178,11 +176,98 @@ class exportData:
         with codecs.open(path, "w", "utf-8")as f:
             f.writelines(self.result)
 
-def arr_data(node, nodeID, locinf, result):
-    """get array data"""
-    for i in range(len(node)):
-        s = str(ModelID) + " " + nodeID + " " + locinf + "," + str(i) + " " + node[i].text + " \r\n"
-        result.append(s)
+class xml_writer:
+    """object organize xml form sql and write data to xml"""
+    def __init__(self):
+        self.Type = {}
+        pass
+    
+    def SAVE(self, path = "test1.xml"):
+        if self.xmltree is not None:
+            with open(path, "wb+") as f:
+                self.xmltree.write(f, encoding="utf-8", xml_declaration=True, pretty_print=True)
+
+    def set_nodeinfo(self):
+        datatype = self.database.Execute("SELECT ElementName, NodeType FROM UnitSchema;")
+        for data in datatype:
+            self.Type[data[0]] = data[1]
+
+    def Organize(self, database):
+        #先从数据库中抓取xml结构（如结构不变可考虑本地留存结构模板xml直接导入加快速度），再通过节点名称匹配注入数据
+        self.database = database
+        nodes = list(self.database.Execute("SELECT ID, ParentID, OrderID, ElementName FROM UnitSchema;"))
+        #找到根结点
+        for item in nodes:
+            if(item[1] == 0):
+                root = etree.Element(item[3])
+                ID=str(item[0])
+                self.xmltree = etree.ElementTree(root)
+                nodes.remove(item)
+                break
+        
+        self.add_child(self.xmltree.getroot(), nodes, ID)
+
+        self.set_nodeinfo()
+
+        sqlpath = "SELECT UnitSchema.ElementName, UnitData.location, UnitData.Data FROM UnitSchema, UnitData WHERE UnitData.SchemaID = UnitSchema.ID && UnitData.ModelID = 1";
+        data = list(self.database.Execute(sqlpath))
+        self.write_data(self.xmltree.getroot(), data)
+        print(etree.tostring(root, pretty_print=True).decode("utf8"))
+        print(data)
+
+    def add_child(self, node, data, ID):
+        subdata = []
+        flag = False
+        for item in data:
+            if(str(item[1]) == ID):
+                subdata.append(item)
+                flag = True
+        if flag is True:
+            subdata.sort(key = (lambda item:item[2]))
+            print(subdata)
+            for item in subdata:
+                child = etree.Element(item[3])
+                node.append(child)
+                ID=str(item[0])
+                data.remove(item)
+                self.add_child(child, data, ID)
+            subdata.clear()
+
+    def write_data(self, node, data):
+        if self.Type[node.tag] == "Link":
+            for child in node:
+                self.write_data(child, data)
+        elif self.Type[node.tag] == "Data":
+            for item in data:
+                if node.tag == item[0]:
+                    node.text = item[2]
+                    data.remove(item)
+                    break
+        else:
+            if len(node) == 0:
+                #多维数组情况
+                subdata = []
+                deletdata = []
+                #取出数组数据，将location转换为list[int]
+                for item in data:
+                    if(node.tag == item[0]):
+                        deletdata.append(item)
+                        litem  = list(item)
+                        locs = item[1]
+                        subs = locs.split(",")
+                        for i in subs:
+                            i = int(i)
+                        litem[1] = subs
+                        subdata.append(litem)            
+                #删除data中的重复数据
+                for item in deletdata:
+                    data.remove(item)
+                deletdata.clear()
+                #创建array节点写入数据
+                pass    
+            else:
+                #复杂数组情况，deepcopy数组根结点，获取
+                pass
     
 if __name__=="__main__":
     start =time.clock()
@@ -193,9 +278,12 @@ if __name__=="__main__":
     #z.WriteTXT("unit.txt")
     x = mysql()
     x.Database()
-    y = exportData(x)
-    y.Export()
+    #y = exportData(x)
+    #y.Export()
     #y.WriteTXT("data.txt")
+    k = xml_writer()
+    k.Organize(x)
+    #k.SAVE()
     
     end = time.clock()
     print('Running time: %s Seconds'%(end-start))
