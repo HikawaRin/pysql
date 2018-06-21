@@ -183,20 +183,22 @@ class xml_writer:
         self.Type = {}
         pass
     
-    def SAVE(self, path = "test1.xml"):
+    def SAVE(self, path = "test2.xml"):
         if self.xmltree is not None:
             with open(path, "wb+") as f:
                 self.xmltree.write(f, encoding="utf-8", xml_declaration=True, pretty_print=True)
 
-    def set_nodeinfo(self):
-        datatype = self.database.Execute("SELECT ElementName, NodeType FROM UnitSchema;")
+    def set_nodeinfo(self, mark):
+        s = "SELECT ElementName, NodeType FROM " + mark + "Schema;"
+        datatype = self.database.Execute(s)
         for data in datatype:
             self.Type[data[0]] = data[1]
 
-    def Organize(self, database):
+    def Organize(self, database, mark, modelid):
         # 先从数据库中抓取xml结构（如结构不变可考虑本地留存结构模板xml直接导入加快速度），再通过节点名称匹配注入数据
         self.database = database
-        nodes = list(self.database.Execute("SELECT ID, ParentID, OrderID, ElementName FROM UnitSchema;"))
+        s1 = "SELECT ID, ParentID, OrderID, ElementName FROM " + mark +"Schema;"
+        nodes = list(self.database.Execute(s1))
         # 找到根结点
         for item in nodes:
             if(item[1] == 0):
@@ -208,9 +210,11 @@ class xml_writer:
         
         self.add_child(self.xmltree.getroot(), nodes, ID)
 
-        self.set_nodeinfo()
+        self.set_nodeinfo(mark)
 
-        sqlpath = "SELECT UnitSchema.ElementName, UnitData.location, UnitData.Data FROM UnitSchema, UnitData WHERE UnitData.SchemaID = UnitSchema.ID && UnitData.ModelID = 1";
+        sqlpath = "SELECT " + mark + "Schema.ElementName, " + mark + "Data.location, "+ mark + "Data.Data "
+        sqlpath += "FROM " + mark + "Schema, " + mark + "Data "
+        sqlpath += "WHERE " + mark + "Data.SchemaID = " + mark + "Schema.ID && "+ mark + "Data.ModelID = " + str(modelid) + ";"
         data = list(self.database.Execute(sqlpath))
         # self.write_data(self.xmltree.getroot(), data)
         
@@ -364,10 +368,11 @@ def write_node_data(node, node_data_type, data):
                 index = int(subdata[i][1].pop(0))
                 datalist[index].append(subdata[i])
             #  写入数据
-            for arrdata in datalist:
+            while len(node) < len(datalist):
                 ctree = copy.deepcopy(node[0])
                 node.append(ctree)
-                write_node_data(ctree, node_data_type, arrdata)
+            for i in range(len(datalist)):                
+                write_node_data(node[i], node_data_type, datalist[i])
 
 def subdatanode(node, node_data_type, nodelist):
     for child in node:
@@ -396,7 +401,7 @@ if __name__=="__main__":
     # y.Export()
     # y.WriteTXT("data.txt")
     k = xml_writer()
-    k.Organize(x)
+    k.Organize(x, "Unit", 1)
     # k.SAVE()
     
     end = time.clock()
