@@ -1,11 +1,12 @@
-#coding = utf8
-#mysql for test ip:118.24.5.150 user:admin pass:admin
+# coding = utf8
+# mysql for test ip:118.24.5.150 user:admin pass:admin
 import pymysql
 from lxml import etree
 import time
 import copy
-#使用 with codecs.open(path, "w", "utf-8")as f: 格式保存结果防止乱码
+# 使用 with codecs.open(path, "w", "utf-8")as f: 格式保存结果防止乱码
 import codecs
+
 
 class SchemaGenerator:
     """read a xml file and give each node a special id"""
@@ -104,7 +105,7 @@ class exportData:
         self.xmltree = etree.parse(path)
 
     def LoadDict(self, database, path):
-        #从数据库中读取ID, ElementName和NodeType信息构成ID-节点名字典和节点名字-节点类型字典
+        # 从数据库中读取ID, ElementName和NodeType信息构成ID-节点名字典和节点名字-节点类型字典
         self.ID = {}
         self.Type = {}
         self.database = database
@@ -120,28 +121,28 @@ class exportData:
 
     def getdata(self, node, flag, locinf = "", arrparentnode = None):
         if flag == 0:
-            #不是复杂数组内的情况, flag为0
+            # 不是复杂数组内的情况, flag为0
             if self.Type[node.tag] == "Link":
-                #连接节点，无数据
+                # 连接节点，无数据
                 for child in node:
                     self.getdata(child, 0)
             elif self.Type[node.tag] == "Data":
-                #简单数据节点，无子元素，带有简单数据
+                # 简单数据节点，无子元素，带有简单数据
                 s = str(ModelID) + " " + str(self.ID[node.tag]) + " 0 " + node.text + " \r\n"
                 self.result.append(s)
             else:
-                #数组情况，跳转至数组情况(flag == 1)
+                # 数组情况，跳转至数组情况(flag == 1)
                 self.getdata(node, 1)
         elif flag == 1:
-            #数组情况falg为1，设定数组父节点
+            # 数组情况falg为1，设定数组父节点
             if arrparentnode is None:
                 arrparentnode = node
-            #判断是否为复杂数组
+            # 判断是否为复杂数组
             if node[0].tag == "array":
-                #多重数组情况(!只能处理同阶数组)
-                #判断是否为1维数组
+                # 多重数组情况(!只能处理同阶数组)
+                # 判断是否为1维数组
                 if len(node[0]) == 0:
-                    #1维数组，读取数据
+                    # 1维数组，读取数据
                     for i in range(len(node)):
                         s = str(ModelID) + " "
                         s += str(self.ID[arrparentnode.tag]) + " "
@@ -149,27 +150,27 @@ class exportData:
                         s += node[i].text + " \r\n"
                         self.result.append(s)
                 else:
-                    #多维数组进行降阶
+                    # 多维数组进行降阶
                     for i in range(len(node)):
                         sublocinf = locinf + str(i) + ","
                         self.getdata(node[i], 1, sublocinf, arrparentnode)                                    
             else:
-                #复杂数组情况,首级子节点必为连接结点
+                # 复杂数组情况,首级子节点必为连接结点
                 for i in range(len(node)):
                     sublocinf = locinf + str(i) + ","
                     self.getdata(node[i], 2, sublocinf, None)
         else:
-            #复杂数组内情况，flag为2
+            # 复杂数组内情况，flag为2
             if self.Type[node.tag] == "Link":
-                #连接节点，无数据
+                # 连接节点，无数据
                 for child in node:
                     self.getdata(child, 2, locinf, None)
             elif self.Type[node.tag] == "Data":
-                #简单数据节点，无子元素，带有简单数据
+                # 简单数据节点，无子元素，带有简单数据
                 s = str(ModelID) + " " + str(self.ID[node.tag]) + " " + locinf + "0 " + node.text + " \r\n"
                 self.result.append(s)
             else:
-                #数组情况，跳转至数组情况(flag == 1)
+                # 数组情况，跳转至数组情况(flag == 1)
                 self.getdata(node, 1, locinf, None)
 
     def WriteTXT(self, path):
@@ -193,10 +194,10 @@ class xml_writer:
             self.Type[data[0]] = data[1]
 
     def Organize(self, database):
-        #先从数据库中抓取xml结构（如结构不变可考虑本地留存结构模板xml直接导入加快速度），再通过节点名称匹配注入数据
+        # 先从数据库中抓取xml结构（如结构不变可考虑本地留存结构模板xml直接导入加快速度），再通过节点名称匹配注入数据
         self.database = database
         nodes = list(self.database.Execute("SELECT ID, ParentID, OrderID, ElementName FROM UnitSchema;"))
-        #找到根结点
+        # 找到根结点
         for item in nodes:
             if(item[1] == 0):
                 root = etree.Element(item[3])
@@ -224,7 +225,6 @@ class xml_writer:
                 flag = True
         if flag is True:
             subdata.sort(key = (lambda item:item[2]))
-            print(subdata)
             for item in subdata:
                 child = etree.Element(item[3])
                 node.append(child)
@@ -245,10 +245,10 @@ class xml_writer:
                     break
         else:
             if len(node) == 0:
-                #多维数组情况
+                # 多维数组情况
                 subdata = []
                 deletdata = []
-                #取出数组数据，将location转换为list[int]
+                # 取出数组数据，将location转换为list[int]
                 for item in data:
                     if(node.tag == item[0]):
                         deletdata.append(item)
@@ -259,31 +259,56 @@ class xml_writer:
                             i = int(i)
                         litem[1] = subs
                         subdata.append(litem)            
-                #删除data中的重复数据
+                # 删除data中的重复数据
                 for item in deletdata:
                     data.remove(item)
                 deletdata.clear()
-                #创建array节点写入数据
-                pass    
+                # 创建array节点写入数据
+                write_array_data(node, subdata)    
             else:
-                #复杂数组情况，deepcopy数组根结点，获取
+                # 复杂数组情况，deepcopy数组根结点，获取
                 pass
+
+def write_array_data(node, data):
+    if len(data) == 0:
+        return
+    else:
+        if len(data[0][1]) == 1:
+            # 一维数组，写入数据
+            data.sort(key = (lambda item:item[1]))
+            for item in data:
+                anode = etree.Element("array")
+                anode.text = item[2]
+                node.append(anode)
+        else:
+            # 多维数组，进行降维
+            nodelist = [[]]
+            for i in range(len(data)):
+                while int(data[i][1][0]) >= len(nodelist):
+                    nodelist.append([])
+                index = int(data[i][1].pop(0))
+                nodelist[index].append(data[i])
+            for i in range(len(nodelist)):
+                s = "array" + str(i)
+                croot = etree.Element(s)
+                node.append(croot)
+                write_array_data(croot, nodelist[i])
     
 if __name__=="__main__":
     start =time.clock()
 
     global ModelID
     ModelID = 1
-    #z = SchemaGenerator("unit_test.xml")
-    #z.WriteTXT("unit.txt")
+    # z = SchemaGenerator("unit_test.xml")
+    # z.WriteTXT("unit.txt")
     x = mysql()
     x.Database()
-    #y = exportData(x)
-    #y.Export()
-    #y.WriteTXT("data.txt")
+    # y = exportData(x)
+    # y.Export()
+    # y.WriteTXT("data.txt")
     k = xml_writer()
     k.Organize(x)
-    #k.SAVE()
+    k.SAVE()
     
     end = time.clock()
     print('Running time: %s Seconds'%(end-start))
