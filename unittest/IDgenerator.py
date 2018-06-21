@@ -212,7 +212,9 @@ class xml_writer:
 
         sqlpath = "SELECT UnitSchema.ElementName, UnitData.location, UnitData.Data FROM UnitSchema, UnitData WHERE UnitData.SchemaID = UnitSchema.ID && UnitData.ModelID = 1";
         data = list(self.database.Execute(sqlpath))
-        self.write_data(self.xmltree.getroot(), data)
+        # self.write_data(self.xmltree.getroot(), data)
+        
+        write_node_data(self.xmltree.getroot(), self.Type, data)
         print(etree.tostring(root, pretty_print=True).decode("utf8"))
         print(data)
 
@@ -233,41 +235,41 @@ class xml_writer:
                 self.add_child(child, data, ID)
             subdata.clear()
 
-    def write_data(self, node, data):
-        if self.Type[node.tag] == "Link":
-            for child in node:
-                self.write_data(child, data)
-        elif self.Type[node.tag] == "Data":
-            for item in data:
-                if node.tag == item[0]:
-                    node.text = item[2]
-                    data.remove(item)
-                    break
-        else:
-            if len(node) == 0:
-                # 多维数组情况
-                subdata = []
-                deletdata = []
-                # 取出数组数据，将location转换为list[int]
-                for item in data:
-                    if(node.tag == item[0]):
-                        deletdata.append(item)
-                        litem  = list(item)
-                        locs = item[1]
-                        subs = locs.split(",")
-                        for i in subs:
-                            i = int(i)
-                        litem[1] = subs
-                        subdata.append(litem)            
-                # 删除data中的重复数据
-                for item in deletdata:
-                    data.remove(item)
-                deletdata.clear()
-                # 创建array节点写入数据
-                write_array_data(node, subdata)    
-            else:
-                # 复杂数组情况，deepcopy数组根结点，获取
-                pass
+    # def write_data(self, node, data):
+    #     if self.Type[node.tag] == "Link":
+    #         for child in node:
+    #             self.write_data(child, data)
+    #     elif self.Type[node.tag] == "Data":
+    #         for item in data:
+    #             if node.tag == item[0]:
+    #                 node.text = item[2]
+    #                 data.remove(item)
+    #                 break
+    #     else:
+    #         if len(node) == 0:
+    #             # 多维数组情况
+    #             subdata = []
+    #             deletdata = []
+    #             # 取出数组数据，将location转换为list[int]
+    #             for item in data:
+    #                 if(node.tag == item[0]):
+    #                     deletdata.append(item)
+    #                     litem  = list(item)
+    #                     locs = item[1]
+    #                     subs = locs.split(",")
+    #                     for i in subs:
+    #                         i = int(i)
+    #                     litem[1] = subs
+    #                     subdata.append(litem)            
+    #             # 删除data中的重复数据
+    #             for item in deletdata:
+    #                 data.remove(item)
+    #             deletdata.clear()
+    #             # 创建array节点写入数据
+    #             write_array_data(node, subdata)    
+    #         else:
+    #             # 复杂数组情况，deepcopy数组根结点，获取
+    #             pass
 
 def write_array_data(node, data):
     if len(data) == 0:
@@ -288,11 +290,98 @@ def write_array_data(node, data):
                     nodelist.append([])
                 index = int(data[i][1].pop(0))
                 nodelist[index].append(data[i])
+            
             for i in range(len(nodelist)):
                 s = "array" + str(i)
                 croot = etree.Element(s)
                 node.append(croot)
                 write_array_data(croot, nodelist[i])
+
+def write_node_data(node, node_data_type, data):
+    if node_data_type[node.tag] == "Link":
+        for child in node:
+            write_node_data(child, node_data_type, data)
+    elif node_data_type[node.tag] == "Data":
+        for item in data:
+            if node.tag == item[0]:
+                node.text = item[2]
+                data.remove(item)
+                break
+    else:
+        if len(node) == 0:
+            # 多维数组情况
+            subdata = []
+            deletdata = []
+            # 取出数组数据，将location转换为list[int]
+            for item in data:
+                if(node.tag == item[0]):
+                    deletdata.append(item)
+                    # location转换为list[int]
+                    litem  = list(item)
+                    locs = item[1]
+                    if isinstance(locs,str):
+                        subs = locs.split(",")
+                        for i in subs:
+                            i = int(i)
+                    
+                        litem[1] = subs
+                    subdata.append(litem)            
+            # 删除data中的重复数据
+            for item in deletdata:
+                data.remove(item)
+            deletdata.clear()
+            # 创建array节点写入数据
+            write_array_data(node, subdata)    
+        else:
+            # 复杂数组情况，deepcopy数组根结点，分组写入数据
+            subdata = []
+            deletdata = []
+            nodelist = []
+            # 获取复杂节点下的所有数据
+            #  获取复杂节点下的所有数据节点名称
+            subdatanode(node, node_data_type, nodelist)
+            #  获取数据节点数据
+            for datanode in nodelist:
+                for item in data:
+                    if(datanode == item[0]):
+                        deletdata.append(item)
+                        litem  = list(item)
+                        locs = item[1]
+                        subs = locs.split(",")
+                        for i in subs:
+                            i = int(i)
+                        litem[1] = subs
+                        subdata.append(litem)
+                # 删除data中的重复数据
+                for item in deletdata:
+                    data.remove(item)
+                deletdata.clear()
+            # 将数据按location分组
+            datalist = [[]]
+            for i in range(len(subdata)):
+                while int(subdata[i][1][0]) >= len(datalist):
+                    datalist.append([])
+                index = int(subdata[i][1].pop(0))
+                datalist[index].append(subdata[i])
+            #  写入数据
+            for arrdata in datalist:
+                ctree = copy.deepcopy(node[0])
+                node.append(ctree)
+                write_node_data(ctree, node_data_type, arrdata)
+
+def subdatanode(node, node_data_type, nodelist):
+    for child in node:
+        if node_data_type[child.tag] == "Link":
+            for child in node:
+                subdatanode(child, node_data_type, nodelist)
+        elif node_data_type[child.tag] == "Data":
+            nodelist.append(child.tag)
+        else:
+            if len(child) == 0:
+                nodelist.append(child.tag)
+            else:
+                subdatanode(child, node_data_type, nodelist)
+            
     
 if __name__=="__main__":
     start =time.clock()
@@ -308,7 +397,7 @@ if __name__=="__main__":
     # y.WriteTXT("data.txt")
     k = xml_writer()
     k.Organize(x)
-    k.SAVE()
+    # k.SAVE()
     
     end = time.clock()
     print('Running time: %s Seconds'%(end-start))

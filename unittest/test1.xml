@@ -44,6 +44,34 @@
         <复杂字符串/>
         <复杂简单数组/>
       </复杂>
+      <复杂>
+        <整数>115</整数>
+        <double>12.1845</double>
+        <复杂字符串>1string</复杂字符串>
+        <复杂简单数组>
+          <array>11</array>
+          <array>12</array>
+          <array>13</array>
+          <array>14</array>
+          <array>15</array>
+          <array>16</array>
+          <array>17</array>
+        </复杂简单数组>
+      </复杂>
+      <复杂>
+        <整数>215</整数>
+        <double>22.1845</double>
+        <复杂字符串>2string</复杂字符串>
+        <复杂简单数组>
+          <array>21</array>
+          <array>22</array>
+          <array>23</array>
+          <array>24</array>
+          <array>25</array>
+          <array>26</array>
+          <array>27</array>
+        </复杂简单数组>
+      </复杂>
     </复杂成员数组>
   </复杂类型>
   <重复使用/>
