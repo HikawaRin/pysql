@@ -114,10 +114,11 @@ class exportData:
             self.ID[node[1]] = node[0]
             self.Type[node[1]] = node[2]
 
-    def Export(self):
+    def Export(self, ModelID):
+        self.ModelID = ModelID
         root = self.xmltree.getroot()
         self.getdata(root, 0)
-        print(self.result)
+        # print(self.result)
 
     def getdata(self, node, flag, locinf = "", arrparentnode = None):
         if flag == 0:
@@ -128,7 +129,7 @@ class exportData:
                     self.getdata(child, 0)
             elif self.Type[node.tag] == "Data":
                 # 简单数据节点，无子元素，带有简单数据
-                s = str(ModelID) + " " + str(self.ID[node.tag]) + " 0 " + node.text + " \r\n"
+                s = str(self.ModelID) + " " + str(self.ID[node.tag]) + " 0 " + node.text + " \r\n"
                 self.result.append(s)
             else:
                 # 数组情况，跳转至数组情况(flag == 1)
@@ -144,7 +145,7 @@ class exportData:
                 if len(node[0]) == 0:
                     # 1维数组，读取数据
                     for i in range(len(node)):
-                        s = str(ModelID) + " "
+                        s = str(self.ModelID) + " "
                         s += str(self.ID[arrparentnode.tag]) + " "
                         s += locinf + str(i) + " "
                         s += node[i].text + " \r\n"
@@ -167,7 +168,7 @@ class exportData:
                     self.getdata(child, 2, locinf, None)
             elif self.Type[node.tag] == "Data":
                 # 简单数据节点，无子元素，带有简单数据
-                s = str(ModelID) + " " + str(self.ID[node.tag]) + " " + locinf + "0 " + node.text + " \r\n"
+                s = str(self.ModelID) + " " + str(self.ID[node.tag]) + " " + locinf + "0 " + node.text + " \r\n"
                 self.result.append(s)
             else:
                 # 数组情况，跳转至数组情况(flag == 1)
@@ -189,7 +190,7 @@ class xml_writer:
                 self.xmltree.write(f, encoding="utf-8", xml_declaration=True, pretty_print=True)
 
     def set_nodeinfo(self, mark):
-        s = "SELECT ElementName, NodeType FROM " + mark + "Schema;"
+        s = "SELECT ID, NodeType FROM " + mark + "Schema;"
         datatype = self.database.Execute(s)
         for data in datatype:
             self.Type[data[0]] = data[1]
@@ -202,7 +203,7 @@ class xml_writer:
         # 找到根结点
         for item in nodes:
             if(item[1] == 0):
-                root = etree.Element(item[3])
+                root = etree.Element(item[3], ID = str(item[0]))
                 ID=str(item[0])
                 self.xmltree = etree.ElementTree(root)
                 nodes.remove(item)
@@ -212,14 +213,20 @@ class xml_writer:
 
         self.set_nodeinfo(mark)
 
-        sqlpath = "SELECT " + mark + "Schema.ElementName, " + mark + "Data.location, "+ mark + "Data.Data "
+        sqlpath = "SELECT " + mark + "Schema.ID, " + mark + "Data.location, "+ mark + "Data.Data "
         sqlpath += "FROM " + mark + "Schema, " + mark + "Data "
         sqlpath += "WHERE " + mark + "Data.SchemaID = " + mark + "Schema.ID && "+ mark + "Data.ModelID = " + str(modelid) + ";"
         data = list(self.database.Execute(sqlpath))
+        # sqlpath1 = "SELECT " + mark + "Schema.ElementName, " + mark + "Data.location, "+ mark + "Data.Data "
+        # sqlpath1 += "FROM " + mark + "Schema, " + mark + "Data "
+        # sqlpath1 += "WHERE " + mark + "Data.SchemaID = " + mark + "Schema.ID && "+ mark + "Data.ModelID = " + str(modelid) + ";"
+        # data1 = list(self.database.Execute(sqlpath1))
+        # print(data)
+        # print(data1)
         # self.write_data(self.xmltree.getroot(), data)
         
         write_node_data(self.xmltree.getroot(), self.Type, data)
-        print(etree.tostring(root, pretty_print=True).decode("utf8"))
+        # print(etree.tostring(root, pretty_print=True).decode("utf8"))
         print(data)
 
     def add_child(self, node, data, ID):
@@ -232,7 +239,7 @@ class xml_writer:
         if flag is True:
             subdata.sort(key = (lambda item:item[2]))
             for item in subdata:
-                child = etree.Element(item[3])
+                child = etree.Element(item[3], ID = str(item[0]))
                 node.append(child)
                 ID=str(item[0])
                 data.remove(item)
@@ -302,12 +309,12 @@ def write_array_data(node, data):
                 write_array_data(croot, nodelist[i])
 
 def write_node_data(node, node_data_type, data):
-    if node_data_type[node.tag] == "Link":
+    if node_data_type[int(node.get("ID"))] == "Link":
         for child in node:
             write_node_data(child, node_data_type, data)
-    elif node_data_type[node.tag] == "Data":
+    elif node_data_type[int(node.get("ID"))] == "Data":
         for item in data:
-            if node.tag == item[0]:
+            if int(node.get("ID")) == int(item[0]):
                 node.text = item[2]
                 data.remove(item)
                 break
@@ -318,7 +325,7 @@ def write_node_data(node, node_data_type, data):
             deletdata = []
             # 取出数组数据，将location转换为list[int]
             for item in data:
-                if(node.tag == item[0]):
+                if int(node.get("ID")) == int(item[0]):
                     deletdata.append(item)
                     # location转换为list[int]
                     litem  = list(item)
@@ -347,7 +354,7 @@ def write_node_data(node, node_data_type, data):
             #  获取数据节点数据
             for datanode in nodelist:
                 for item in data:
-                    if(datanode == item[0]):
+                    if(datanode == int(item[0])):
                         deletdata.append(item)
                         litem  = list(item)
                         locs = item[1]
@@ -376,14 +383,14 @@ def write_node_data(node, node_data_type, data):
 
 def subdatanode(node, node_data_type, nodelist):
     for child in node:
-        if node_data_type[child.tag] == "Link":
+        if node_data_type[int(child.get("ID"))] == "Link":
             for child in node:
                 subdatanode(child, node_data_type, nodelist)
-        elif node_data_type[child.tag] == "Data":
-            nodelist.append(child.tag)
+        elif node_data_type[int(child.get("ID"))] == "Data":
+            nodelist.append(int(child.get("ID")))
         else:
             if len(child) == 0:
-                nodelist.append(child.tag)
+                nodelist.append(int(child.get("ID")))
             else:
                 subdatanode(child, node_data_type, nodelist)
             
@@ -391,18 +398,16 @@ def subdatanode(node, node_data_type, nodelist):
 if __name__=="__main__":
     start =time.clock()
 
-    global ModelID
-    ModelID = 1
-    # z = SchemaGenerator("unit_test.xml")
-    # z.WriteTXT("unit.txt")
+    # z = SchemaGenerator("SCdemo.xml")
+    # z.WriteTXT("SCSchema1.txt")
     x = mysql()
-    x.Database()
-    # y = exportData(x)
-    # y.Export()
+    x.Database("demo")
+    # y = exportData(x, "SCdemo1.xml", "SCSchema")
+    # y.Export(1)
     # y.WriteTXT("data.txt")
     k = xml_writer()
-    k.Organize(x, "Unit", 1)
-    # k.SAVE()
+    k.Organize(x, "SC", 1)
+    # k.SAVE("SCTest100.xml")
     
     end = time.clock()
     print('Running time: %s Seconds'%(end-start))
