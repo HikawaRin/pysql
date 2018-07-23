@@ -91,93 +91,6 @@ class mysql:
         for item in data:
             print(item)
 
-# class exportData:
-#     """export data from exit xml file"""
-#     def __init__(self):
-#         pass
-# 
-#     def __init__(self, database, xmlpath = "unit_test.xml", schemapath = "UnitSchema"):
-#         self.LoadXML(xmlpath)
-#         self.LoadDict(database, schemapath)
-#         self.result = ["ModelID SchemaID Location Date \r\n"]
-#     
-#     def LoadXML(self, path):
-#         self.xmltree = etree.parse(path)
-# 
-#     def LoadDict(self, database, path):
-#         # 从数据库中读取ID, ElementName和NodeType信息构成ID-节点名字典和节点名字-节点类型字典
-#         self.ID = {}
-#         self.Type = {}
-#         self.database = database
-#         nodes = self.database.Execute("SELECT ID, ElementName, NodeType FROM " + path + ";")
-#         for node in nodes:
-#             self.ID[node[1]] = node[0]
-#             self.Type[node[1]] = node[2]
-# 
-#     def Export(self, ModelID):
-#         self.ModelID = ModelID
-#         root = self.xmltree.getroot()
-#         self.getdata(root, 0)
-#         # print(self.result)
-# 
-#     def getdata(self, node, flag, locinf = "", arrparentnode = None):
-#         if flag == 0:
-#             # 不是复杂数组内的情况, flag为0
-#             if self.Type[node.tag] == "Link":
-#                 # 连接节点，无数据
-#                 for child in node:
-#                     self.getdata(child, 0)
-#             elif self.Type[node.tag] == "Data":
-#                 # 简单数据节点，无子元素，带有简单数据
-#                 s = str(self.ModelID) + " " + str(self.ID[node.tag]) + " 0 " + node.text + " \r\n"
-#                 self.result.append(s)
-#             else:
-#                 # 数组情况，跳转至数组情况(flag == 1)
-#                 self.getdata(node, 1)
-#         elif flag == 1:
-#             # 数组情况falg为1，设定数组父节点
-#             if arrparentnode is None:
-#                 arrparentnode = node
-#             # 判断是否为复杂数组
-#             if node[0].tag == "array":
-#                 # 多重数组情况(!只能处理同阶数组)
-#                 # 判断是否为1维数组
-#                 if len(node[0]) == 0:
-#                     # 1维数组，读取数据
-#                     for i in range(len(node)):
-#                         s = str(self.ModelID) + " "
-#                         s += str(self.ID[arrparentnode.tag]) + " "
-#                         s += locinf + str(i) + " "
-#                         s += node[i].text + " \r\n"
-#                         self.result.append(s)
-#                 else:
-#                     # 多维数组进行降阶
-#                     for i in range(len(node)):
-#                         sublocinf = locinf + str(i) + ","
-#                         self.getdata(node[i], 1, sublocinf, arrparentnode)                                    
-#             else:
-#                 # 复杂数组情况,首级子节点必为连接结点
-#                 for i in range(len(node)):
-#                     sublocinf = locinf + str(i) + ","
-#                     self.getdata(node[i], 2, sublocinf, None)
-#         else:
-#             # 复杂数组内情况，flag为2
-#             if self.Type[node.tag] == "Link":
-#                 # 连接节点，无数据
-#                 for child in node:
-#                     self.getdata(child, 2, locinf, None)
-#             elif self.Type[node.tag] == "Data":
-#                 # 简单数据节点，无子元素，带有简单数据
-#                 s = str(self.ModelID) + " " + str(self.ID[node.tag]) + " " + locinf + "0 " + node.text + " \r\n"
-#                 self.result.append(s)
-#             else:
-#                 # 数组情况，跳转至数组情况(flag == 1)
-#                 self.getdata(node, 1, locinf, None)
-# 
-#     def WriteTXT(self, path):
-#         with codecs.open(path, "w", "utf-8")as f:
-#             f.writelines(self.result)
-
 class XpathExportData:
     """a new way to export data from exit xml file by tree"""
     # 维护两棵xml树, 数据xml树位于本地, id xml树位于数据库中(或从本地读取)遍历数据xml树, 通过xpath对应到id xml树, 将数据与id对应
@@ -378,42 +291,6 @@ class xml_writer:
                 self.add_child(child, data, ID)
             subdata.clear()
 
-    # def write_data(self, node, data):
-    #     if self.Type[node.tag] == "Link":
-    #         for child in node:
-    #             self.write_data(child, data)
-    #     elif self.Type[node.tag] == "Data":
-    #         for item in data:
-    #             if node.tag == item[0]:
-    #                 node.text = item[2]
-    #                 data.remove(item)
-    #                 break
-    #     else:
-    #         if len(node) == 0:
-    #             # 多维数组情况
-    #             subdata = []
-    #             deletdata = []
-    #             # 取出数组数据，将location转换为list[int]
-    #             for item in data:
-    #                 if(node.tag == item[0]):
-    #                     deletdata.append(item)
-    #                     litem  = list(item)
-    #                     locs = item[1]
-    #                     subs = locs.split(",")
-    #                     for i in subs:
-    #                         i = int(i)
-    #                     litem[1] = subs
-    #                     subdata.append(litem)            
-    #             # 删除data中的重复数据
-    #             for item in deletdata:
-    #                 data.remove(item)
-    #             deletdata.clear()
-    #             # 创建array节点写入数据
-    #             write_array_data(node, subdata)    
-    #         else:
-    #             # 复杂数组情况，deepcopy数组根结点，获取
-    #             pass
-
 def write_array_data(node, data):
     if len(data) == 0:
         return
@@ -542,15 +419,9 @@ if __name__=="__main__":
     # h.WriteTXT("xpathdata.txt")
     # print(h.result)
     
-    # y = exportData(x, "unit_test.xml", "UnitTestSchema")
-    # y.Export(3)
-    # y.WriteTXT("unittestdata.txt")
-    
-    k = xml_writer()
-    k.Organize(x, "UnitTest", 1)
-    k.SAVE("xpathtset.xml")
+    # k = xml_writer()
+    # k.Organize(x, "UnitTest", 1)
+    # k.SAVE("xpathtset.xml")
     
     end = time.clock()
     print('Running time: %s Seconds'%(end-start))
-    
-    
