@@ -21,7 +21,7 @@ XML（可扩展标记语言 EXtensible Markup Language）是标记语言的一�
 
 #### 2.1.3 Python  
 
-Python 是一门简单易学且功能强大的编程语言。它拥有高效的高级数据结构，并能够用简单又有效的方式进行面向对象编程。Python 优雅的语法和动态类型，再结合它的解释性，使其在大多数平台的众多领域中，成为编写脚本或开发应用程序的理想语言。  
+Python 是一门简单易学且功能强大的编程语言。它拥有高效的高级数据结构，并能够用简单又有效的方式进行面向对象编程。Python 优雅的语法和动态类型，再结合它的解释性，使其在大多数平台的众多领域中，成为编写脚本或开发应用程序的理想语言。本文选用目前的稳定版本Python 3.6作为开发环境。  
 
 ### 2.2 实现方式  
 
@@ -32,11 +32,196 @@ Python 是一门简单易学且功能强大的编程语言。它拥有高效的�
 
   1. 根据XML标签的状态将标签分类为Link、Data、Array三种标签类型，其中Link标签表示该标签是只用于表示数据结构的标签，其必然带有子标签且本身不携带数据，Link标签是专为展现数据的结构而设计出的抽象标签；Data标签则表示一个具体的数据，Data标签必然不存在子标签，携带且只携带一个真实存在的数据；Array标签表示其子标签构成一个数组，是Link标签的拓展，具有Link标签的所有已有特征，在此基础上Array标签还表示其子标签具有相同的结构，Array标签的子标签可以是Data标签以表示一个简单数组，也可以是Link标签以表示一个结构体构成的数组，也可以是Array标签以表示一个多维数组。  
 
-  2. 将XML解析为树形结构，通过一次遍历记录所有节点信息，将XML表示的数据的结构转化为一张关系表。  
+  2. 将XML解析为树形结构，通过一次遍历记录所有用于重现节点的节点信息及位置信息，将XML表示的数据的结构转化为一张结构关系表。  
 
-  3. 检索XML文件中的所有Data节点获取对应的真实数据得到与节点相对应的关系表。  
+  3. 检索XML文件中的所有Data节点获取对应的真实数据得到与节点相对应的数据关系表。  
 
-通过这三个步骤可以将XML分解为两张互相关联的关系表。  
+通过这三个步骤可以将XML分解为两张互相关联的关系表，从而将半结构化的数据转换为关系型的数据。  
+第一步与第二步没有依赖关系，在实际实现时可以同时完成，本文采用Python及lxml包将XML解析为DOM树实现上述算法：  
+用于将XML标签分类并将XML表示的结构转换为结构关系表的部分代码如下  
+
+```python
+class SchemaGenerator:
+    """read a xml file and give each node a special id"""
+    def __init__(self):
+        pass
+
+    def __init__(self, path):
+        self.LoadXML(path)
+        self.counter = 1
+        self.result = ["ID ParentID ElementName OrderID DataType \r\n"]
+    
+    def LoadXML(self, path):
+        self.xmltree = etree.parse(path)
+
+    def generate(self, node, parent_node_id, order):
+        if len(node) == 0:
+            s = str(self.counter) + " " + str(parent_node_id) + " " + node.tag + " " + str(order) + " Data \r\n"
+            self.result.append(s)
+            self.counter += 1
+            return
+        else:
+            if node[0].tag == "array":
+                s = str(self.counter) + " " + str(parent_node_id) + " " + node.tag + " " + str(order) + " Array \r\n"
+                self.result.append(s)
+                self.counter += 1
+                return
+            else:
+                s = str(self.counter) + " " + str(parent_node_id) + " " + node.tag + " " + str(order) + " Link \r\n"
+                self.result.append(s)
+                nodeID = copy.deepcopy(self.counter)
+                self.counter += 1
+
+                for i in range(len(node)):
+                    self.generate(node[i], nodeID, i)
+
+    def WriteTXT(self, path):
+        root = self.xmltree.getroot()
+        self.generate(root, 0, 0)
+
+        print(self.result)
+        with codecs.open(path, "w", "utf-8")as f:
+            f.writelines(self.result)
+```  
+
+为了体现两张关系表是分离的，即可将一个统一的格式运用于多次测试中，此处代码展示的是从数据库中读取数据作为结构信息的方法（即本节第三部分的内容），实际使用时可选择从本地直接加载XML的方法
+用于将XML中的数据转换为数据关系表的部分代码如下：  
+
+```python
+class XpathExportData:
+    """a new way to export data from exit xml file by tree"""
+    # 维护两棵xml树, 数据xml树位于本地, id xml树位于数据库中(或从本地读取)遍历数据xml树, 通过xpath对应到id xml树, 将数据与id对应
+    def __init__(self, database, dataxmlpath = "unit_test.xml", schemapath = "UnitTest"):
+        # 导入数据xml树
+        self.LoadXML(dataxmlpath)
+        # 导入id xml树
+        self.LoadSchemaTree(database, schemapath)
+        # print(etree.tostring(self.idxmltree.getroot(), pretty_print=True).decode("utf8"))
+        # 导出的数据, 用空格分隔元素
+        self.result = ["ModelID SchemaID Location Date \r\n"]
+        # 导入节点信息字典
+        self.Type = {}
+        self.set_nodeinfo(schemapath)
+    
+    def LoadXML(self, path):
+        self.dataxmltree = etree.parse(path)
+
+    def LoadSchemaTree(self, database, path):
+        # 从数据库中读取数据构建schema tree, 可考虑从本地读取提高速度
+        self.database = database
+        s1 = "SELECT ID, ParentID, OrderID, ElementName FROM " + path +"Schema;"
+        nodes = list(self.database.Execute(s1))
+        # 找到根结点
+        for item in nodes:
+            if(item[1] == 0):
+                root = etree.Element(item[3], ID = str(item[0]))
+                ID=str(item[0])
+                self.idxmltree = etree.ElementTree(root)
+                nodes.remove(item)
+                break
+        
+        self.add_child(self.idxmltree.getroot(), nodes, ID)
+        
+
+    def add_child(self, node, data, ID):
+            subdata = []
+            flag = False
+            for item in data:
+                if(str(item[1]) == ID):
+                    subdata.append(item)
+                    flag = True
+            if flag is True:
+                subdata.sort(key = (lambda item:item[2]))
+                for item in subdata:
+                    child = etree.Element(item[3], ID = str(item[0]))
+                    node.append(child)
+                    ID=str(item[0])
+                    data.remove(item)
+                    self.add_child(child, data, ID)
+                subdata.clear()
+
+    def set_nodeinfo(self, mark):
+        s = "SELECT ElementName, NodeType FROM " + mark + "Schema;"
+        datatype = self.database.Execute(s)
+        for data in datatype:
+            self.Type[data[0]] = data[1]
+
+    def Export(self, ModelID):
+        self.ModelID = ModelID
+        root = self.dataxmltree.getroot()
+        xpath = "/" + root.tag
+        self.getdata(root, 0, xpath)
+
+    def getdata(self, node, flag, xpath, locinf = "", arrparentnode = None):
+        if flag == 0:
+            # 不是复杂数组内的情况, flag为0
+            if self.Type[node.tag] == "Link":
+                # 连接节点，无数据
+                for child in node:
+                    cxpath = xpath + "/" + str(child.tag)
+                    self.getdata(child, 0, cxpath)
+            elif self.Type[node.tag] == "Data":
+                # 简单数据节点，无子元素，带有简单数据
+                xs = xpath + "/@ID"
+                nodeid = (self.idxmltree.xpath(xs))[0]
+                s = str(self.ModelID) + " " + str(nodeid) + " 0 " + node.text + " \r\n"
+                self.result.append(s)
+            else:
+                # 数组情况，跳转至数组情况(flag == 1)
+                self.getdata(node, 1, xpath)
+        elif flag == 1:
+            # 数组情况falg为1，设定数组父节点
+            if arrparentnode is None:
+                arrparentnode = node
+            # 判断是否为复杂数组
+            if node[0].tag == "array":
+                # 多重数组情况(!只能处理同阶数组)
+                # 判断是否为1维数组
+                if len(node[0]) == 0:
+                    # 1维数组，读取数据
+                    for i in range(len(node)):
+                        xs = xpath + "/@ID"
+                        nodeid = (self.idxmltree.xpath(xs))[0]
+                        s = str(self.ModelID) + " "
+                        s += str(nodeid) + " "
+                        s += locinf + str(i) + " "
+                        s += node[i].text + " \r\n"
+                        self.result.append(s)
+                else:
+                    # 多维数组进行降阶
+                    for i in range(len(node)):
+                        sublocinf = locinf + str(i) + ","
+                        self.getdata(node[i], 1, xpath, sublocinf, arrparentnode)                                    
+            else:
+                # 复杂数组情况,首级子节点必为连接结点
+                for i in range(len(node)):
+                    sublocinf = locinf + str(i) + ","
+                    cxpath = xpath + "/" + str(node[i].tag)
+                    print(sublocinf)
+                    self.getdata(node[i], 2, cxpath, sublocinf, None)
+        else:
+            # 复杂数组内情况，flag为2
+            if self.Type[node.tag] == "Link":
+                # 连接节点，无数据
+                for child in node:
+                    cxpath = xpath + "/" + str(child.tag)
+                    self.getdata(child, 2, cxpath, locinf, None)
+            elif self.Type[node.tag] == "Data":
+                # 简单数据节点，无子元素，带有简单数据
+                xs = xpath + "/@ID"
+                nodeid = (self.idxmltree.xpath(xs))[0]
+                s = str(self.ModelID) + " " + str(nodeid) + " " + locinf + "0 " + node.text + " \r\n"
+                self.result.append(s)
+            else:
+                # 数组情况，跳转至数组情况(flag == 1)
+                self.getdata(node, 1, xpath, locinf, None)
+
+    def WriteTXT(self, path):
+        with codecs.open(path, "w", "utf-8")as f:
+            f.writelines(self.result)
+```
+
+通过以上的Python代码即可复现本节所陈述的XML到关系表的转换算法
 
 #### 2.2.2 将转化后的关系表存储到数据库中  
 
