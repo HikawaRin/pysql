@@ -50,7 +50,7 @@ class SchemaGenerator:
         self.LoadXML(path)
         self.counter = 1
         self.result = ["ID ParentID ElementName OrderID DataType \r\n"]
-    
+
     def LoadXML(self, path):
         self.xmltree = etree.parse(path)
 
@@ -84,7 +84,7 @@ class SchemaGenerator:
             f.writelines(self.result)
 ```  
 
-为了体现两张关系表是分离的，即可将一个统一的格式运用于多次测试中，此处代码展示的是从数据库中读取数据作为结构信息的方法（即本节第三部分的内容），实际使用时可选择从本地直接加载XML的方法
+为了体现两张关系表是分离的，即可将一个统一的格式运用于多次测试中，此处代码展示的是从数据库中读取数据作为结构信息的方法（即本节第三部分的内容），实际使用时可选择从本地直接加载XML的方法。
 用于将XML中的数据转换为数据关系表的部分代码如下：  
 
 ```python
@@ -102,7 +102,7 @@ class XpathExportData:
         # 导入节点信息字典
         self.Type = {}
         self.set_nodeinfo(schemapath)
-    
+
     def LoadXML(self, path):
         self.dataxmltree = etree.parse(path)
 
@@ -119,9 +119,8 @@ class XpathExportData:
                 self.idxmltree = etree.ElementTree(root)
                 nodes.remove(item)
                 break
-        
+
         self.add_child(self.idxmltree.getroot(), nodes, ID)
-        
 
     def add_child(self, node, data, ID):
             subdata = []
@@ -191,7 +190,7 @@ class XpathExportData:
                     # 多维数组进行降阶
                     for i in range(len(node)):
                         sublocinf = locinf + str(i) + ","
-                        self.getdata(node[i], 1, xpath, sublocinf, arrparentnode)                                    
+                        self.getdata(node[i], 1, xpath, sublocinf, arrparentnode)
             else:
                 # 复杂数组情况,首级子节点必为连接结点
                 for i in range(len(node)):
@@ -219,13 +218,77 @@ class XpathExportData:
     def WriteTXT(self, path):
         with codecs.open(path, "w", "utf-8")as f:
             f.writelines(self.result)
-```
+```  
 
 通过以上的Python代码即可复现本节所陈述的XML到关系表的转换算法
 
 #### 2.2.2 将转化后的关系表存储到数据库中  
 
-#### 2.2.3 将数据库中的数据转化为元XML文件
+根据上文所阐述的XML到关系表的转换算法中关系表的构造可以很容易在数据库中构建对应的数据库表单，通过MySQL中提供的LOAD DATA LOCAL INFILE接口可以快速将存储的关系表导入数据库对应表单中，完成数据及数据结构的存储。  
+
+#### 2.2.3 将数据库中的数据转化为XML文件  
+
+通过前两部分的算法我们可以将XML分解为结构关系表及数据关系表并存储到数据库中。在数据库已经存储了相关信息的情况下我们可以根据第一部分所述的方法逆推出通过关系表构建XML文件的方法，即首先通过结构关系表中的信息重现没有数据的XML文件，再将数据关系表中的数据插入到对应位置即可复原XML文件。从而完成XML数据的持久化，将XML作为在数据库与自动测试系统间传输数据的桥梁。  
+实现XML文件复原的部分代码如下：  
+
+```python
+class xml_writer:
+    """object organize xml form sql and write data to xml"""
+    def __init__(self):
+        self.Type = {}
+        pass
+
+    def SAVE(self, path = "test2.xml"):
+        if self.xmltree is not None:
+            with open(path, "wb+") as f:
+                self.xmltree.write(f, encoding="utf-8", xml_declaration=True, pretty_print=True)
+
+    def set_nodeinfo(self, mark):
+        s = "SELECT ID, NodeType FROM " + mark + "Schema;"
+        datatype = self.database.Execute(s)
+        for data in datatype:
+            self.Type[data[0]] = data[1]
+
+    def Organize(self, database, mark, modelid):
+        # 先从数据库中抓取xml结构（如结构不变可考虑本地留存结构模板xml直接导入加快速度），再通过节点名称匹配注入数据
+        self.database = database
+        s1 = "SELECT ID, ParentID, OrderID, ElementName FROM " + mark +"Schema;"
+        nodes = list(self.database.Execute(s1))
+        # 找到根结点
+        for item in nodes:
+            if(item[1] == 0):
+                root = etree.Element(item[3], ID = str(item[0]))
+                ID=str(item[0])
+                self.xmltree = etree.ElementTree(root)
+                nodes.remove(item)
+                break
+        self.add_child(self.xmltree.getroot(), nodes, ID)
+
+        self.set_nodeinfo(mark)
+        sqlpath = "SELECT " + mark + "Schema.ID, " + mark + "Data.location, "+ mark + "Data.Data "
+        sqlpath += "FROM " + mark + "Schema, " + mark + "Data "
+        sqlpath += "WHERE " + mark + "Data.SchemaID = " + mark + "Schema.ID && "+ mark + "Data.ModelID = " + str(modelid) + ";"
+        data = list(self.database.Execute(sqlpath))
+        write_node_data(self.xmltree.getroot(), self.Type, data)
+        print(data)
+
+    def add_child(self, node, data, ID):
+        subdata = []
+        flag = False
+        for item in data:
+            if(str(item[1]) == ID):
+                subdata.append(item)
+                flag = True
+        if flag is True:
+            subdata.sort(key = (lambda item:item[2]))
+            for item in subdata:
+                child = etree.Element(item[3], ID = str(item[0]))
+                node.append(child)
+                ID=str(item[0])
+                data.remove(item)
+                self.add_child(child, data, ID)
+            subdata.clear()
+```  
 
 ## 第三章 总结与展望  
 
