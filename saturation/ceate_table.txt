@@ -1,0 +1,42 @@
+// 创建数据结构节点表
+CREATE TABLE IF NOT EXISTS SaturationSchema(
+   ID INT UNSIGNED AUTO_INCREMENT,
+   ParentID INT UNSIGNED,
+   ElementName VARCHAR(100) NOT NULL,
+   OrderID VARCHAR(100),
+   NodeType VARCHAR(100),
+   PRIMARY KEY (ID)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+// 打开数据库本地文件上传功能
+show global variables like"local_infile"; // 查看功能是否打开
+SET global local_infile = ON; // 打开上传功能
+
+// 建立测试信息表
+CREATE TABLE IF NOT EXISTS TWTTestInfo(
+   ID INT UNSIGNED AUTO_INCREMENT,
+   TWTTester VARCHAR(100) NOT NULL,
+   TWTModel VARCHAR(100) NOT NULL,
+   TWTNo VARCHAR(100) NOT NULL,
+   TWTState VARCHAR(100) NOT NULL,
+   TWTInitialFrequency VARCHAR(100) NOT NULL,
+   TWTCutoffFrequency VARCHAR(100) NOT NULL,
+   TWTMotivational VARCHAR(100) NOT NULL,
+   CreateTime VARCHAR(100) NOT NULL,
+   Version VARCHAR(100) NOT NULL,
+   Bench VARCHAR(100) NOT NULL,
+   PRIMARY KEY (ID)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+   // 测试用信息
+   INSERT INTO TWTTestInfo (ID, TWTTester, TWTModel, TWTNo, TWTState, TWTInitialFrequency, TWTCutoffFrequency, TWTMotivational, CreateTime, Version, Bench)
+    VALUES (1, "gonggonggong", "ust-2374", "num4678932", "最终测试", "1.545GHz", "1.605GHz", "连续波", "20180602", "1.0", "bench_1");
+
+// 建立数据表
+CREATE TABLE IF NOT EXISTS SaturationData(
+   ModelID INT UNSIGNED,
+   SchemaID INT UNSIGNED,
+   Location VARCHAR(100),
+   Data VARCHAR(100),
+   FOREIGN KEY (ModelID) REFERENCES TWTTestInfo(ID),
+   FOREIGN KEY (SchemaID) REFERENCES saturationschema(ID)   
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

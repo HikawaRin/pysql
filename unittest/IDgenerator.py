@@ -94,7 +94,7 @@ class mysql:
 class XpathExportData:
     """a new way to export data from exit xml file by tree"""
     # 维护两棵xml树, 数据xml树位于本地, id xml树位于数据库中(或从本地读取)遍历数据xml树, 通过xpath对应到id xml树, 将数据与id对应
-    def __init__(self, database, dataxmlpath = "unit_test.xml", schemapath = "UnitTest"):
+    def __init__(self, database, dataxmlpath = "unit_test.xml", schemapath = "UnitTestSchema"):
         # 导入数据xml树
         self.LoadXML(dataxmlpath)
         # 导入id xml树
@@ -112,7 +112,7 @@ class XpathExportData:
     def LoadSchemaTree(self, database, path):
         # 从数据库中读取数据构建schema tree, 可考虑从本地读取提高速度
         self.database = database
-        s1 = "SELECT ID, ParentID, OrderID, ElementName FROM " + path +"Schema;"
+        s1 = "SELECT ID, ParentID, OrderID, ElementName FROM " + path +";"
         nodes = list(self.database.Execute(s1))
         # 找到根结点
         for item in nodes:
@@ -144,7 +144,7 @@ class XpathExportData:
                 subdata.clear()
 
     def set_nodeinfo(self, mark):
-        s = "SELECT ElementName, NodeType FROM " + mark + "Schema;"
+        s = "SELECT ElementName, NodeType FROM " + mark + ";"
         datatype = self.database.Execute(s)
         for data in datatype:
             self.Type[data[0]] = data[1]
@@ -152,7 +152,7 @@ class XpathExportData:
     def Export(self, ModelID):
         self.ModelID = ModelID
         root = self.dataxmltree.getroot()
-        xpath = "/" + root.tag
+        xpath = "//" + root.tag
         self.getdata(root, 0, xpath)
 
     def getdata(self, node, flag, xpath, locinf = "", arrparentnode = None):
@@ -167,8 +167,9 @@ class XpathExportData:
                 # 简单数据节点，无子元素，带有简单数据
                 xs = xpath + "/@ID"
                 nodeid = (self.idxmltree.xpath(xs))[0]
-                s = str(self.ModelID) + " " + str(nodeid) + " 0 " + node.text + " \r\n"
-                self.result.append(s)
+                if node.text is not None:
+                    s = str(self.ModelID) + " " + str(nodeid) + " 0 " + node.text + " \r\n"
+                    self.result.append(s)
             else:
                 # 数组情况，跳转至数组情况(flag == 1)
                 self.getdata(node, 1, xpath)
@@ -185,11 +186,12 @@ class XpathExportData:
                     for i in range(len(node)):
                         xs = xpath + "/@ID"
                         nodeid = (self.idxmltree.xpath(xs))[0]
-                        s = str(self.ModelID) + " "
-                        s += str(nodeid) + " "
-                        s += locinf + str(i) + " "
-                        s += node[i].text + " \r\n"
-                        self.result.append(s)
+                        if node[i].text is not None:
+                            s = str(self.ModelID) + " "
+                            s += str(nodeid) + " "
+                            s += locinf + str(i) + " "
+                            s += node[i].text + " \r\n"
+                            self.result.append(s)
                 else:
                     # 多维数组进行降阶
                     for i in range(len(node)):
@@ -213,8 +215,9 @@ class XpathExportData:
                 # 简单数据节点，无子元素，带有简单数据
                 xs = xpath + "/@ID"
                 nodeid = (self.idxmltree.xpath(xs))[0]
-                s = str(self.ModelID) + " " + str(nodeid) + " " + locinf + "0 " + node.text + " \r\n"
-                self.result.append(s)
+                if node.text is not None:
+                    s = str(self.ModelID) + " " + str(nodeid) + " " + locinf + "0 " + node.text + " \r\n"
+                    self.result.append(s)
             else:
                 # 数组情况，跳转至数组情况(flag == 1)
                 self.getdata(node, 1, xpath, locinf, None)
@@ -240,6 +243,23 @@ class xml_writer:
         for data in datatype:
             self.Type[data[0]] = data[1]
 
+    def WriteSchema(self, database, mark, modelid):
+        # 先从数据库中抓取xml结构（如结构不变可考虑本地留存结构模板xml直接导入加快速度），再通过节点名称匹配注入数据
+        self.database = database
+        s1 = "SELECT ID, ParentID, OrderID, ElementName FROM " + mark +"Schema;"
+        nodes = list(self.database.Execute(s1))
+        # 找到根结点
+        for item in nodes:
+            if(item[1] == 0):
+                root = etree.Element(item[3], ID = str(item[0]))
+                ID=str(item[0])
+                self.xmltree = etree.ElementTree(root)
+                nodes.remove(item)
+                break
+        
+        self.add_child(self.xmltree.getroot(), nodes, ID)
+        self.set_nodeinfo(mark)
+    
     def Organize(self, database, mark, modelid):
         # 先从数据库中抓取xml结构（如结构不变可考虑本地留存结构模板xml直接导入加快速度），再通过节点名称匹配注入数据
         self.database = database
@@ -407,21 +427,27 @@ def subdatanode(node, node_data_type, nodelist):
 if __name__=="__main__":
     start =time.clock()
 
+    # s = SchemaGenerator("../saturation/saturation.xml")
+    # s.WriteTXT("../saturation/saturationschema.txt")
+
     # z = SchemaGenerator("unit_test.xml")
     # z.WriteTXT("UnitTestSchema.txt")
     
     x = mysql("localhost", "root", "root")
-    # x = mysql()
-    x.Database("unittest")
+    x.Database("saturation")
     
-    # h = XpathExportData(x, "unit_test.xml", "UnitTest")
+    # h = XpathExportData(x, "../saturation/saturation.xml", "saturationschema")
     # h.Export(1)
-    # h.WriteTXT("xpathdata.txt")
+    # h.WriteTXT("../saturation/xpathdata.txt")
     # print(h.result)
     
-    # k = xml_writer()
-    # k.Organize(x, "UnitTest", 1)
-    # k.SAVE("xpathtset.xml")
+    k = xml_writer()
+    k.Organize(x, "Saturation", 1)
+    k.SAVE("../saturation/sql.xml")
+
+    # j = xml_writer()
+    # j.WriteSchema(x, 'sc', 1)
+    # j.SAVE("schema.xml")
     
     end = time.clock()
     print('Running time: %s Seconds'%(end-start))

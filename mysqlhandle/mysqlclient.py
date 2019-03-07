@@ -34,7 +34,7 @@ class mysql:
             print("connect database fail")
 
     def Database(self, database = "test2"):
-        self.database = pymysql.connect(self.host, self.user, self.password, database, charset = "utf8", local_infile = 1)
+        self.database = pymysql.connect(self.host, self.user, self.password, database,charset = "utf8", local_infile = 1)
         if self.database.open:
             print("Database changed to:", database)
         else:

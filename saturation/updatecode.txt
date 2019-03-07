@@ -1,0 +1,29 @@
+//构建数据结构节点关系 使用IDgenerator
+s = SchemaGenerator("../saturation/saturation.xml")
+s.WriteTXT("../saturation/saturationschema.txt")
+
+// 上传命令 使用mysqlhandle(数据库中需预先建立关系表)
+x = mysql("localhost", "root", "root")
+x.Database("saturation")
+x.LOAD_Local_data("../saturation/saturationschema.txt", "saturationschema", " ")
+x.SAVE()
+
+//根据节点关系提取数据
+x = mysql("localhost", "root", "root")
+x.Database("saturation")
+
+y = XpathExportData(x, "../saturation/saturation.xml", "saturationschema")
+y.WriteTXT("../saturation/xpathdata.txt")
+
+// 上传数据(数据库中需预先建立数据表与测试信息表且测试信息中需包含ID为1的数据)
+x = mysql("localhost", "root", "root")
+x.Database("saturation")
+x.LOAD_Local_data("../saturation/xpathdata.txt", "SaturationData", " ")
+x.SAVE()
+
+// 从数据库导出xml文件
+x = mysql("localhost", "root", "root")
+x.Database("saturation")
+k = xml_writer()
+k.Organize(x, "Saturation", 1)
+k.SAVE("../saturation/sql.xml")
