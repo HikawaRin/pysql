@@ -1,3 +1,7 @@
+// 建立数据库
+Create database saturation;
+use saturation;
+
 // 创建数据结构节点表
 CREATE TABLE IF NOT EXISTS SaturationSchema(
    ID INT UNSIGNED AUTO_INCREMENT,
